@@ -42,16 +42,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Package selection
-    packageCards.forEach(card => {
-        card.addEventListener('click', () => {
-            packageCards.forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-            selectedPackage = card.getAttribute('data-package');
+    // packageCards.forEach(card => {
+    //     card.addEventListener('click', () => {
+    //         packageCards.forEach(c => c.classList.remove('selected'));
+    //         card.classList.add('selected');
+    //         selectedPackage = card.getAttribute('data-package');
 
-            // Move to next step
-            document.querySelector('.step-tab[data-step="traveler"]').click();
-        });
-    });
+    //         // Move to next step
+    //         document.querySelector('.step-tab[data-step="traveler"]').click();
+    //     });
+    // });
 
     // Traveler selection (multiple)
     travelerCards.forEach(card => {

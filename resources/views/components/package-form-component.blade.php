@@ -33,7 +33,8 @@
                     <span>Invitation processing time is 48 hours</span>
                 </div>
 
-                <button class="btn btn-custom">
+                <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#step1Modal"
+                    data-bs-dismiss="modal">
                     Get Started
                     <span>→</span>
                 </button>
@@ -70,7 +71,8 @@
                     <span>Invitation processing time is 48 hours</span>
                 </div>
 
-                <button class="btn btn-custom">
+                <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#step1Modal"
+                    data-bs-dismiss="modal">
                     Get Started
                     <span>→</span>
                 </button>
@@ -107,11 +109,17 @@
                     <span>Invitation processing time is 48 hours</span>
                 </div>
 
-                <button class="btn btn-custom">
+                <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#step1Modal"
+                    data-bs-dismiss="modal">
                     Get Started
                     <span>→</span>
                 </button>
             </div>
         </div>
+
+        <!-- Visa Form Component -->
+        <x-visa-form-component />
+
+        <!-- extra -->
     </div>
 </div>
