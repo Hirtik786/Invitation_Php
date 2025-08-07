@@ -41,7 +41,7 @@
                     <div>
                         <div class="text-muted small">Selected Package</div>
                         <div class="text-primary fw-semibold" id="selectedPackageName">Selected Package</div>
-                        <div class="text-muted small" >Selected Country</div>
+                        <div class="text-muted small">Selected Country</div>
                     </div>
                     <div class="text-end">
                         <div class="fs-4 fw-bold text-dark" id="selectedPackagePrice">$0</div>
@@ -382,8 +382,11 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Number of Travellers</label>
-                        <input type="number" class="form-control" value="1">
+                        <input type="number" class="form-control" value="1" id="numTravellers" max="10" min="1">
                     </div>
+                    <!-- DOM Container for travel cards -->
+                    <div id="additionalTravelersSection" class="mt-4"></div>
+
                 </div>
             </div>
 
