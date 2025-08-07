@@ -1,3 +1,7 @@
+@php
+    $countries = include base_path('vendor/umpirsky/country-list/data/en/country.php');
+@endphp
+
 <!-- Step 1 Modal -->
 <div class="modal fade" id="step1Modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -35,12 +39,12 @@
                 <!-- Package Section -->
                 <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mb-4">
                     <div>
-                        <div class="fw-semibold text-secondary small">Selected Package</div>
-                        <div class="text-primary fw-semibold">Invitation + Visa Documentation</div>
-                        <div class="text-muted small">Selected Country</div>
+                        <div class="text-muted small">Selected Package</div>
+                        <div class="text-primary fw-semibold" id="selectedPackageName">Selected Package</div>
+                        <div class="text-muted small" >Selected Country</div>
                     </div>
                     <div class="text-end">
-                        <div class="fs-4 fw-bold text-dark">$599</div>
+                        <div class="fs-4 fw-bold text-dark" id="selectedPackagePrice">$0</div>
                         <div class="text-muted small">USD</div>
                     </div>
                 </div>
@@ -48,34 +52,20 @@
                 <form>
                     <div class="mb-3">
                         <label class="form-label">I am from</label>
-                        <select class="form-select" id="fromCountry1">
+                        <select class="form-select" id="fromCountry1" name="from_country">
                             <option value="">Select country</option>
-                            <option value="US">United States</option>
-                            <option value="UK">United Kingdom</option>
-                            <option value="CA">Canada</option>
-                            <option value="AU">Australia</option>
-                            <option value="DE">Germany</option>
-                            <option value="FR">France</option>
-                            <option value="IN">India</option>
-                            <option value="PK">Pakistan</option>
-                            <option value="BD">Bangladesh</option>
-                            <option value="other">Other</option>
+                            @foreach($countries as $code => $name)
+                                <option value="{{ $code }}">{{ $code }} - {{ $name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">I live in</label>
-                        <select class="form-select" id="liveInCountry1">
+                        <select class="form-select" id="liveInCountry1" name="live_in_country">
                             <option value="">Select country</option>
-                            <option value="US">United States</option>
-                            <option value="UK">United Kingdom</option>
-                            <option value="CA">Canada</option>
-                            <option value="AU">Australia</option>
-                            <option value="DE">Germany</option>
-                            <option value="FR">France</option>
-                            <option value="IN">India</option>
-                            <option value="PK">Pakistan</option>
-                            <option value="BD">Bangladesh</option>
-                            <option value="other">Other</option>
+                            @foreach($countries as $code => $name)
+                                <option value="{{ $code }}">{{ $code }} - {{ $name }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </form>
@@ -255,10 +245,10 @@
             <div class="modal-body">
                 <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span class="badge bg-primary">Invitation + Visa Documentation</span>
+                        <span class="badge bg-primary" id="selectedPackageName">Invitation + Visa Documentation</span>
                         <span class="badge bg-success">VISA FOR: Selected Country</span>
                     </div>
-                    <span class="fw-bold fs-5 text-primary">Price: 599 USD</span>
+                    <span class="fw-bold fs-5 text-primary" id="selectedPackagePrice">Price: 599 USD</span>
                 </div>
 
                 <h6 class="fw-semibold mb-2">Please Upload the Following Documents</h6>
