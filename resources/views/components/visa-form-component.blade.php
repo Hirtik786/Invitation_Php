@@ -255,8 +255,8 @@
             <div class="modal-body">
                 <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span class="badge badge-info">Invitation + Visa Documentation</span>
-                        <span class="badge badge-success">VISA FOR: Selected Country</span>
+                        <span class="badge bg-primary">Invitation + Visa Documentation</span>
+                        <span class="badge bg-success">VISA FOR: Selected Country</span>
                     </div>
                     <span class="fw-bold fs-5 text-primary">Price: 599 USD</span>
                 </div>
