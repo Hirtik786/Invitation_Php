@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // You can populate summary info here using similar pattern
         console.log("Review step opened - show summary if needed");
     });
-    
+
     // ✅ Dynamic Traveler Fields - BY MURK
     const numberInput = document.getElementById("numTravellers");
     const additionalSection = document.getElementById("additionalTravelersSection");
@@ -161,3 +161,27 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
+document.addEventListener("DOMContentLoaded", function () {
+    // When a country is clicked
+    document.querySelectorAll(".country-card").forEach(function (card) {
+        card.addEventListener("click", function () {
+            let countryName = card.querySelector(".country-name").textContent.trim();
+            let countryFlagImg = card.querySelector(".country-flag img").src;
+
+            // Update all package country names
+            document.querySelectorAll(".badge-package").forEach(function (badge) {
+                badge.textContent = `Package For ${countryName}`;
+            });
+
+            // Update all flags in package section
+            document.querySelectorAll(".badge-flag").forEach(function (flagBadge) {
+                flagBadge.innerHTML = `<img src="${countryFlagImg}" alt="${countryName} Flag" style="width:30px;height:auto;">`;
+            });
+
+            // Show the package step
+            document.getElementById("country-step").classList.remove("active");
+            document.getElementById("package-step").classList.add("active");
+        });
+    });
+});
+

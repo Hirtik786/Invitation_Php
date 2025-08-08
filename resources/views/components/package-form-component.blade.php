@@ -8,7 +8,7 @@
             <div class="package-card h-100" data-package="invitation-visa">
                 <div class="package-header mb-3">
                     <div class="package-title">Invitation + Visa Documentation</div>
-                    <div class="d-flex gap-2 flex-wrap mt-2">
+                    <div class="d-flex flex-wrap mt-2">
                         <span class="badge badge-flag">🇹🇷</span>
                         <span class="badge badge-package">Package For Turkey</span>
                     </div>
@@ -47,7 +47,7 @@
             <div class="package-card h-100" data-package="invitation">
                 <div class="package-header mb-3">
                     <div class="package-title">Invitation</div>
-                    <div class="d-flex gap-2 flex-wrap mt-2">
+                    <div class="d-flex flex-wrap mt-2">
                         <span class="badge badge-flag">🇹🇷</span>
                         <span class="badge badge-package">Package For Turkey</span>
                     </div>
@@ -85,7 +85,7 @@
             <div class="package-card h-100" data-package="visa">
                 <div class="package-header mb-3">
                     <div class="package-title">Visa Documentation</div>
-                    <div class="d-flex gap-2 flex-wrap mt-2">
+                    <div class="d-flex flex-wrap mt-2">
                         <span class="badge badge-flag">🇹🇷</span>
                         <span class="badge badge-package">Package For Turkey</span>
                     </div>

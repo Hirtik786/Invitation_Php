@@ -39,7 +39,7 @@ $countries = [
 
     <div class="row g-3">
         <?php foreach ($countries as $country): ?>
-        <div class="col-12 col-sm-6 col-lg-4">
+        <div class="col-4 col-md-3 col-lg-2">
             <div class="country-card" data-country="<?= htmlspecialchars($country['slug']) ?>">
                 <div class="country-flag">
                     <img src="<?= htmlspecialchars($country['flag']) ?>"
