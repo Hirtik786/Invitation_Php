@@ -444,7 +444,7 @@
                     data-bs-dismiss="modal">Back</button>
                 <div class="d-flex align-items-center gap-3">
                     <div class="text-muted small">Step 5 of 5</div>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-dismiss="modal">Submit</button>
+                    <button id="submitButton" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </div>

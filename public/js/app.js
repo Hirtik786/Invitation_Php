@@ -1,4 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
+
+    // ===== GLOBAL STATE =====
+    let selectedCountry = null;
+    let selectedPackage = null;
+    let selectedPackageName = "Selected Package";
+    let selectedPackagePrice = null;
+    let selectedFromCountry = "";
+    let selectedLiveInCountry = "";
+    let selectedTravelers = [];
+    let uploadedDocuments = {};
+    let personalDetails = {};
+
+    // ===== DOM REFERENCES =====
     const stepTabs = document.querySelectorAll('.step-tab');
     const stepContents = document.querySelectorAll('.step-content');
     const countryCards = document.querySelectorAll('.country-card');
@@ -6,16 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const travelerCards = document.querySelectorAll('.traveler-card');
     const submitButton = document.getElementById('submitButton');
     const successMessage = document.getElementById('successMessage');
+    const numberInput = document.getElementById("numTravellers");
+    const additionalSection = document.getElementById("additionalTravelersSection");
 
-    let selectedCountry = null;
-    let selectedPackage = null;
-    let selectedTravelers = [];
-    let selectedPackageName = "Selected Package";
-    let selectedPackagePrice = "0";
-    let selectedFromCountry = "";
-    let selectedLiveInCountry = "";
-
-    // Step tab navigation
+    // ===== STEP NAVIGATION =====
     stepTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const step = tab.getAttribute('data-step');
@@ -29,22 +36,62 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Country selection
+    // ===== STEP 1 - COUNTRY SELECTION =====
     countryCards.forEach(card => {
         card.addEventListener('click', () => {
+            selectedCountry = card.dataset.country;
+            console.log("Country selected:", selectedCountry);
+
             countryCards.forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
-            selectedCountry = card.getAttribute('data-country');
+
+            // Update package badges + flags
+            let countryName = card.querySelector(".country-name").textContent.trim();
+            let countryFlagImg = card.querySelector(".country-flag img").src;
+
+            document.querySelectorAll(".badge-package").forEach(badge => {
+                badge.textContent = `Package For ${countryName}`;
+            });
+
+            document.querySelectorAll(".badge-flag").forEach(flagBadge => {
+                flagBadge.innerHTML = `<img src="${countryFlagImg}" alt="${countryName} Flag" style="width:30px;height:auto;">`;
+            });
 
             document.querySelector('.step-tab[data-step="package"]').click();
         });
     });
 
-    // Traveler selection
+    // ===== STEP 2 - PACKAGE SELECTION =====
+    document.querySelectorAll(".open-modal").forEach(button => {
+        button.addEventListener("click", function () {
+            selectedPackage = this.getAttribute("data-package-id") || null;
+            selectedPackageName = this.getAttribute("data-package-name") || "Selected Package";
+            selectedPackagePrice = this.getAttribute("data-package-price") || "0";
+
+            document.getElementById("selectedPackageName").textContent = selectedPackageName;
+            document.getElementById("selectedPackagePrice").textContent = `$${selectedPackagePrice}`;
+        });
+    });
+
+    // ===== STEP 2.1 - DROPDOWNS =====
+    document.getElementById("fromCountry1")?.addEventListener("change", function () {
+        selectedFromCountry = this.value;
+    });
+    document.getElementById("liveInCountry1")?.addEventListener("change", function () {
+        selectedLiveInCountry = this.value;
+    });
+
+    // ===== STEP 3 - DOCUMENT UPLOAD =====
+    document.querySelectorAll(".document-upload").forEach(input => {
+        input.addEventListener("change", () => {
+            uploadedDocuments[input.name] = input.files[0]?.name || null;
+        });
+    });
+
+    // ===== STEP 4 - TRAVELER SELECTION =====
     travelerCards.forEach(card => {
         card.addEventListener('click', () => {
             const travelerId = card.getAttribute('data-traveler');
-
             if (card.classList.contains('selected')) {
                 card.classList.remove('selected');
                 selectedTravelers = selectedTravelers.filter(id => id !== travelerId);
@@ -55,133 +102,118 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Submit button
-    if (submitButton) {
-        submitButton.addEventListener('click', () => {
-            if (!selectedCountry || !selectedPackage || selectedTravelers.length === 0) {
-                alert('Please complete all steps before submitting.');
-                return;
-            }
-
-            successMessage.classList.add('show');
-
-            countryCards.forEach(c => c.classList.remove('selected'));
-            packageCards.forEach(c => c.classList.remove('selected'));
-            travelerCards.forEach(c => c.classList.remove('selected'));
-
-            selectedCountry = null;
-            selectedPackage = null;
-            selectedTravelers = [];
-
-            document.querySelector('.step-tab[data-step="country"]').click();
-
-            setTimeout(() => {
-                successMessage.classList.remove('show');
-            }, 3000);
-        });
-    }
-
-    // price and packages
-    document.querySelectorAll(".open-modal").forEach(button => {
-        button.addEventListener("click", function () {
-            selectedPackageName = this.getAttribute("data-package-name") || "Selected Package";
-            selectedPackagePrice = this.getAttribute("data-package-price") || "0";
-
-            // Update Step 1 UI
-            document.getElementById("selectedPackageName").textContent = selectedPackageName;
-            document.getElementById("selectedPackagePrice").textContent = `$${selectedPackagePrice}`;
-        });
-    });
-
-    // Update selected countries on Step 1 dropdown change
-    document.getElementById("fromCountry1").addEventListener("change", function () {
-        selectedFromCountry = this.value;
-    });
-    document.getElementById("liveInCountry1").addEventListener("change", function () {
-        selectedLiveInCountry = this.value;
-    });
-
-    // Update Step 3 Modal on open
-    document.getElementById('step3Modal').addEventListener('show.bs.modal', function () {
-        this.querySelector("#selectedPackageName").textContent = selectedPackageName;
-        this.querySelector("#selectedPackagePrice").textContent = `Price: $${selectedPackagePrice} USD`;
-
-        const visaBadge = this.querySelector(".badge.bg-success");
-    });
-
-    // Update Step 4 Modal on open
-    document.getElementById('step4Modal').addEventListener('show.bs.modal', function () {
-        this.querySelector(".text-danger").textContent = `$${selectedPackagePrice} USD`;
-    });
-
-    // Optionally Update Step 5 (Review Modal)
-    document.getElementById('step5Modal').addEventListener('show.bs.modal', function () {
-        // You can populate summary info here using similar pattern
-        console.log("Review step opened - show summary if needed");
-    });
-
-    // ✅ Dynamic Traveler Fields - BY MURK
-    const numberInput = document.getElementById("numTravellers");
-    const additionalSection = document.getElementById("additionalTravelersSection");
-
+    // ===== DYNAMIC TRAVELER FIELDS =====
     if (numberInput && additionalSection) {
         numberInput.addEventListener("input", function () {
             const num = parseInt(numberInput.value) || 1;
-            additionalSection.innerHTML = `
-    <h5 class="fw-bold mb-4">Additional Travelers Information</h5>`;
+            additionalSection.innerHTML = `<h5 class="fw-bold mb-4">Additional Travelers Information</h5>`;
             for (let i = 2; i <= num; i++) {
                 const card = document.createElement('div');
                 card.className = 'card p-3 mb-3';
-                card.style.backgroundColor = '#f1f6fc'; // Light blue background
-
+                card.style.backgroundColor = '#f1f6fc';
                 card.innerHTML = `
-        <h6 class="fw-bold mb-3">Traveler ${i}</h6>
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">Full Name</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-person"></i></span>
-                    <input type="text" class="form-control" name="traveler_${i}_name" placeholder="Full Name">
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Phone Number</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                    <input type="text" class="form-control" name="traveler_${i}_phone" placeholder="Phone Number">
-                </div>
-            </div>
-        </div>
-    `;
-
+                    <h6 class="fw-bold mb-3">Traveler ${i}</h6>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control" name="traveler_${i}_name" placeholder="Full Name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input type="text" class="form-control" name="traveler_${i}_phone" placeholder="Phone Number">
+                            </div>
+                        </div>
+                    </div>
+                `;
                 additionalSection.appendChild(card);
             }
-
         });
     }
 
-});
-document.addEventListener("DOMContentLoaded", function () {
-    // When a country is clicked
-    document.querySelectorAll(".country-card").forEach(function (card) {
-        card.addEventListener("click", function () {
-            let countryName = card.querySelector(".country-name").textContent.trim();
-            let countryFlagImg = card.querySelector(".country-flag img").src;
-
-            // Update all package country names
-            document.querySelectorAll(".badge-package").forEach(function (badge) {
-                badge.textContent = `Package For ${countryName}`;
-            });
-
-            // Update all flags in package section
-            document.querySelectorAll(".badge-flag").forEach(function (flagBadge) {
-                flagBadge.innerHTML = `<img src="${countryFlagImg}" alt="${countryName} Flag" style="width:30px;height:auto;">`;
-            });
-
-            // Show the package step
-            document.getElementById("country-step").classList.remove("active");
-            document.getElementById("package-step").classList.add("active");
-        });
+    // ===== STEP 5 - REVIEW MODALS =====
+    document.getElementById('step3Modal')?.addEventListener('show.bs.modal', function () {
+        this.querySelector("#selectedPackageName").textContent = selectedPackageName;
+        this.querySelector("#selectedPackagePrice").textContent = `Price: $${selectedPackagePrice} USD`;
     });
-});
 
+    document.getElementById('step4Modal')?.addEventListener('show.bs.modal', function () {
+        this.querySelector(".text-danger").textContent = `$${selectedPackagePrice} USD`;
+    });
+
+    document.getElementById('step5Modal')?.addEventListener('show.bs.modal', function () {
+        logApplicationData();
+    });
+
+    // ===== SUBMIT BUTTON =====
+    if (submitButton) {
+    submitButton.addEventListener('click', () => {
+        // 1️⃣ Log all selected form data
+        logApplicationData();
+
+        // 2️⃣ Validate before submit
+        if (!selectedCountry || !selectedPackage || selectedTravelers.length === 0) {
+            alert('Please complete all steps before submitting.');
+            return;
+        }
+
+        // 3️⃣ Show success message
+        successMessage.classList.add('show');
+
+        // 4️⃣ Reset selections
+        countryCards.forEach(c => c.classList.remove('selected'));
+        packageCards.forEach(c => c.classList.remove('selected'));
+        travelerCards.forEach(c => c.classList.remove('selected'));
+
+        selectedCountry = null;
+        selectedPackage = null;
+        selectedTravelers = [];
+
+        // 5️⃣ Close Step 5 modal
+        const step5Modal = bootstrap.Modal.getInstance(document.getElementById('step5Modal'));
+        if (step5Modal) step5Modal.hide();
+
+        // 6️⃣ Open Traveller modal (Step 3)
+        const travelerModal = new bootstrap.Modal(document.getElementById('step3Modal'));
+        travelerModal.show();
+
+        // 7️⃣ Hide success message after delay
+        setTimeout(() => {
+            successMessage.classList.remove('show');
+        }, 3000);
+    });
+}
+
+    // ===== LOGGING FUNCTION =====
+    function logApplicationData() {
+        console.clear();
+        console.log("=== Application Data Summary ===");
+        console.log("Selected Country:", selectedCountry);
+        console.log("Selected Package ID:", selectedPackage);
+        console.log("Selected Package Name:", selectedPackageName);
+        console.log("Package Price:", selectedPackagePrice);
+        console.log("From Country:", selectedFromCountry);
+        console.log("Live In Country:", selectedLiveInCountry);
+        console.log("Selected Travelers:", selectedTravelers);
+        console.log("Uploaded Documents:", uploadedDocuments);
+
+        console.log("\n=== All Form Fields ===");
+        document.querySelectorAll("input, select, textarea").forEach(el => {
+            const name = el.name || "(no name)";
+            let value = "";
+            if (el.type === "checkbox" || el.type === "radio") {
+                value = el.checked ? "Checked" : "Unchecked";
+            } else {
+                value = el.value || "(empty)";
+            }
+            console.log(`${name}: ${value}`);
+        });
+
+        console.log("================================");
+    }
+
+});
