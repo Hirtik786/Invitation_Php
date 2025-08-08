@@ -243,15 +243,14 @@
 
             <!-- Body -->
             <div class="modal-body">
-                <div class="mb-4 d-flex justify-content-between align-items-center">
+                <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap">
                     <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span class="badge packcstm" id="selectedPackageName">Invitation + Visa Documentation</span>
+                        <span class="badge packcstm" id="selectedPackageName">Invitation + Visa
+                            Documentation</span>
                         <span class="badge countrycstm visa-Selected">VISA FOR: Selected Country</span>
                     </div>
-
                     <span class="fw-bold fs-5 text-dark" id="selectedPackagePrice">Price: 599 USD</span>
                 </div>
-
 
                 <h6 class="fw-semibold mb-2">Please Upload the Following Documents</h6>
                 <p class="text-muted small mb-4">Accepted Formats: <strong>PDF, JPG, PNG</strong></p>
@@ -329,16 +328,13 @@
             </div>
 
             <div class="modal-body scrollable-modal-body">
-                <div class="text-muted mb-3 d-flex justify-content-between align-items-center flex-wrap">
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span class="badge packcstm">Invitation</span>
-                        <span class="badge countrycstm visa-Selected">VISA FOR: Selected Country</span>
-                    </div>
-                    <div class="fw-bold">
+                <div class="text-muted mb-3 d-flex align-items-center flex-wrap gap-2">
+                    <span class="badge packcstm">Invitation</span>
+                    <span class="badge countrycstm visa-Selected">VISA FOR: Selected Country</span>
+                    <div class="fw-bold ms-auto">
                         Price: <span class="text-dark text-danger">599 USD</span>
                     </div>
                 </div>
-
 
 
                 <h5 class="mb-3">Please Provide The Following Details</h5>
@@ -346,58 +342,56 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">First Name</label>
-                        <input type="text" class="form-control" name="first_name">
+                        <input type="text" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Last Name</label>
-                        <input type="text" class="form-control" name="last_name">
+                        <input type="text" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Phone Number</label>
-                        <input type="text" class="form-control" name="phone_number">
+                        <input type="text" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Email Address</label>
-                        <input type="email" class="form-control" name="email_address">
+                        <input type="email" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">From (Country)</label>
-                        <input type="text" class="form-control" name="from_country">
+                        <input type="text" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Live in</label>
-                        <input type="text" class="form-control" name="live_in_country">
+                        <input type="text" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Passport Number</label>
-                        <input type="text" class="form-control" name="passport_number">
+                        <input type="text" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Profession</label>
-                        <input type="text" class="form-control" name="profession">
+                        <input type="text" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Travel Date From</label>
-                        <input type="date" class="form-control" name="travel_date_from">
+                        <input type="date" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Travel Date To</label>
-                        <input type="date" class="form-control" name="travel_date_to">
+                        <input type="date" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Travel Purpose</label>
-                        <input type="text" class="form-control" name="travel_purpose">
+                        <input type="text" class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Number of Travellers</label>
-                        <input type="number" class="form-control" name="num_travellers" value="1" id="numTravellers"
-                            max="10" min="1">
+                        <input type="number" class="form-control" value="1" id="numTravellers" max="10" min="1">
                     </div>
-
                     <!-- DOM Container for travel cards -->
                     <div id="additionalTravelersSection" class="mt-4"></div>
-                </div>
 
+                </div>
             </div>
 
             <div class="modal-footer justify-content-between bg-light">

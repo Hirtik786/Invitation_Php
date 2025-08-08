@@ -129,6 +129,7 @@
 
         .country-flag img {
             max-height: 120px;
+            border-radius: 8px;
             /* ✅ control flag height */
             width: auto;
             object-fit: contain;
@@ -463,7 +464,7 @@
         .step.inactive .step-number {
             background: rgba(255, 255, 255, 0.3);
         }
-
+        
         .upload-box {
             border: 2px dashed #94a3b8;
             padding: 20px;
@@ -517,7 +518,7 @@
             border-radius: 10px;
         }
 
-        .packcstm{
+        .packcstm {
             background-color: #E0F2FE !important;
             color: #0369A1 !important;
             border-radius: 5px;
