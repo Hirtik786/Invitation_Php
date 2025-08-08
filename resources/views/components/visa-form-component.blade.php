@@ -342,56 +342,57 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">First Name</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="firstName">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Last Name</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="lastName">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Phone Number</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="phoneNumber">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Email Address</label>
-                        <input type="email" class="form-control">
+                        <input type="email" class="form-control" id="emailAddress">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">From (Country)</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="fromCountry">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Live in</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="liveInCountry">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Passport Number</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="passportNumber">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Profession</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="profession">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Travel Date From</label>
-                        <input type="date" class="form-control">
+                        <input type="date" class="form-control" id="travelDateFrom">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Travel Date To</label>
-                        <input type="date" class="form-control">
+                        <input type="date" class="form-control" id="travelDateTo">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Travel Purpose</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" id="travelPurpose">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Number of Travellers</label>
                         <input type="number" class="form-control" value="1" id="numTravellers" max="10" min="1">
                     </div>
+
                     <!-- DOM Container for travel cards -->
                     <div id="additionalTravelersSection" class="mt-4"></div>
-
                 </div>
+
             </div>
 
             <div class="modal-footer justify-content-between bg-light">
@@ -399,8 +400,8 @@
                     data-bs-dismiss="modal">Back</button>
                 <div class="d-flex align-items-center gap-3">
                     <div class="text-muted small">Step 4 of 5</div>
-                    <button class="btn btn-primary" data-bs-target="#step5Modal" data-bs-toggle="modal"
-                        data-bs-dismiss="modal">Next</button>
+                    <button class="btn btn-primary" id="step4NextBtn" data-bs-target="#step5Modal"
+                        data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
                 </div>
             </div>
         </div>
@@ -436,12 +437,78 @@
                         <div class="step-number">5</div> Review
                     </div>
                 </div>
-            </div>
-            <div class="modal-body">
+            </div> 
+            <div class="modal-body scrollable-modal-body">
                 <p class="text-success">Please review all steps before submitting.</p>
                 <p>Once submitted, your application will be processed. Make sure all uploaded documents
                     and personal
                     details are correct.</p>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Plan Name</th>
+                            <td class="review-plan-name"></td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td class="review-description"></td>
+                        </tr>
+                        <tr>
+                            <th>Duration</th>
+                            <td class="review-duration"></td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td class="review-name"></td>
+                        </tr>
+                        <tr>
+                            <th>Contact Number</th>
+                            <td class="review-contact"></td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td class="review-email"></td>
+                        </tr>
+                        <tr>
+                            <th>From Country</th>
+                            <td class="review-from-country"></td>
+                        </tr>
+                        <tr>
+                            <th>Live In Country</th>
+                            <td class="review-livein-country"></td>
+                        </tr>
+                        <tr>
+                            <th>Passport Number</th>
+                            <td class="review-passport"></td>
+                        </tr>
+                        <tr>
+                            <th>Profession</th>
+                            <td class="review-profession"></td>
+                        </tr>
+                        <tr>
+                            <th>Travel Date</th>
+                            <td class="review-travel-date"></td>
+                        </tr>
+                        <tr>
+                            <th>Return Date</th>
+                            <td class="review-return-date"></td>
+                        </tr>
+                        <tr>
+                            <th>Number of Travelers</th>
+                            <td class="review-num-travelers"></td>
+                        </tr>
+                        <tr>
+                            <th>Purpose of Travel</th>
+                            <td class="review-purpose"></td>
+                        </tr>
+                        <tr>
+                            <th>Additional Travelers</th>
+                            <td class="review-additional-travelers"></td>
+                        </tr>
+                    </table>
+                </div>
+
+
             </div>
             <div class="modal-footer justify-content-between bg-light">
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#step4Modal"

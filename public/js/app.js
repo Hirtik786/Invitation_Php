@@ -158,52 +158,90 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ===== SUBMIT BUTTON =====
     if (submitButton) {
-        submitButton.addEventListener('click', () => {
-            // 1️⃣ Log all selected form data
-            logApplicationData();
+    submitButton.addEventListener('click', () => {
+        // 1️⃣ Log all selected form data
+        logApplicationData();
 
-            // 2️⃣ Validate before submit
-            // if (!selectedCountry || !selectedPackage || selectedTravelers.length === 0) {
-            //     alert('Please complete all steps before submitting.');
-            //     return;
-            // }
+        // ===== COLLECT TRAVELER DATA =====
+        const travelersData = [];
 
-            // 3️⃣ Show success message
-            successMessage.classList.add('show');
-
-            // 4️⃣ Reset selections
-            countryCards.forEach(c => c.classList.remove('selected'));
-            packageCards.forEach(c => c.classList.remove('selected'));
-            travelerCards.forEach(c => c.classList.remove('selected'));
-
-            selectedCountry = null;
-            selectedPackage = null;
-            selectedTravelers = [];
-
-
-            //traveler
-            // Close all open modals
-            document.querySelectorAll('.modal.show').forEach(modalEl => {
-                const modalInstance = bootstrap.Modal.getInstance(modalEl);
-                if (modalInstance) {
-                    modalInstance.hide();
-                }
-            });
-
-            // Remove leftover backdrops just in case
-            document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
-
-            // Now go to the step
-            document.querySelector('.step-tab[data-step="traveler"]').click();
-
-
-
-            // 7️⃣ Hide success message after delay
-            setTimeout(() => {
-                successMessage.classList.remove('show');
-            }, 3000);
+        // Main traveler
+        travelersData.push({
+            name: `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`.trim(),
+            relation: "Customer",
+            dob: document.getElementById("dob")?.value || "",
+            passport: document.getElementById("passportNumber")?.value || ""
         });
-    }
+
+        // Additional travelers
+        const numTravelers = parseInt(document.getElementById("numTravellers").value) || 1;
+        for (let i = 2; i <= numTravelers; i++) {
+            travelersData.push({
+                name: document.querySelector(`[name="traveler_${i}_name"]`)?.value || "",
+                relation: document.querySelector(`[name="traveler_${i}_relation"]`)?.value || "Family",
+                dob: document.querySelector(`[name="traveler_${i}_dob"]`)?.value || "",
+                passport: document.querySelector(`[name="traveler_${i}_passport"]`)?.value || ""
+            });
+        }
+
+        // ===== BUILD TRAVELER STEP HTML =====
+        const travelerStepContainer = document.getElementById("traveler-step");
+        travelerStepContainer.innerHTML = `
+            <h2 class="section-title">Pick Who's Traveling</h2>
+            <p class="section-subtitle">Select the names of all individuals who will be traveling with you.</p>
+            <div class="row g-3">
+                ${travelersData.map((traveler, index) => {
+                    const initial = traveler.name ? traveler.name.charAt(0).toUpperCase() : "?";
+                    const gradientColors = [
+                        "linear-gradient(135deg, #f093fb, #f5576c)",
+                        "linear-gradient(135deg, #4facfe, #00f2fe)",
+                        "linear-gradient(135deg, #43e97b, #38f9d7)"
+                    ];
+                    const bg = index === 0 ? "" : `style="background:${gradientColors[index % gradientColors.length]}"`;
+                    return `
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="traveler-card" data-traveler="${traveler.name.toLowerCase().replace(/\s+/g, '')}">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="traveler-avatar" ${bg}>${initial}</div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <span class="traveler-name">${traveler.name}</span>
+                                            <span class="relation-badge">${traveler.relation}</span>
+                                        </div>
+                                        <div class="traveler-meta">
+                                            <div>Date of birth: ${traveler.dob}</div>
+                                            <div>Passport Number: ${traveler.passport}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join("")}
+            </div>
+            <div class="border-top pt-4 mt-4">
+                <button class="btn btn-success btn-submit" id="submitBtn" disabled>
+                    Submit Invitation
+                </button>
+            </div>
+        `;
+
+        // ===== CLOSE ANY OPEN MODALS =====
+        document.querySelectorAll('.modal.show').forEach(modalEl => {
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
+        });
+        document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+
+        // ===== SWITCH TO TRAVELER STEP =====
+        document.querySelector('.step-tab[data-step="traveler"]').click();
+
+        // ===== SHOW SUCCESS MESSAGE =====
+        successMessage.classList.add('show');
+        setTimeout(() => successMessage.classList.remove('show'), 3000);
+    });
+}
+
 
     // ===== LOGGING FUNCTION =====
     function logApplicationData() {
@@ -233,4 +271,67 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("================================");
     }
 
+});
+document.getElementById("step4NextBtn")?.addEventListener("click", function () {
+    // Plan details
+    document.querySelector(".review-plan-name").textContent = window.selectedPackageName || "";
+    document.querySelector(".review-description").textContent = "Invitation processing time is 48 hours";
+    document.querySelector(".review-duration").textContent = "96 Hours Valid";
+
+    // Personal details
+    const firstName = document.getElementById("firstName").value || "";
+    const lastName = document.getElementById("lastName").value || "";
+    document.querySelector(".review-name").textContent = `${firstName} ${lastName}`.trim();
+    document.querySelector(".review-contact").textContent = document.getElementById("phoneNumber").value || "";
+    document.querySelector(".review-email").textContent = document.getElementById("emailAddress").value || "";
+
+    // Country info
+    document.querySelector(".review-from-country").textContent =
+        document.getElementById("fromCountry").value || document.getElementById("fromCountry1")?.value || "";
+    document.querySelector(".review-livein-country").textContent =
+        document.getElementById("liveInCountry").value || document.getElementById("liveInCountry1")?.value || "";
+
+    // Passport & profession
+    document.querySelector(".review-passport").textContent = document.getElementById("passportNumber").value || "";
+    document.querySelector(".review-profession").textContent = document.getElementById("profession").value || "";
+
+    // Travel dates
+    document.querySelector(".review-travel-date").textContent = document.getElementById("travelDateFrom").value || "";
+    document.querySelector(".review-return-date").textContent = document.getElementById("travelDateTo").value || "";
+
+    // Purpose & number of travellers
+    document.querySelector(".review-purpose").textContent = document.getElementById("travelPurpose").value || "";
+    document.querySelector(".review-num-travelers").textContent = document.getElementById("numTravellers").value || "";
+
+    // Additional Travelers Table
+    const additionalTravelersContainer = document.querySelector(".review-additional-travelers");
+    additionalTravelersContainer.innerHTML = ""; // Clear old content
+
+    let travelers = [];
+    document.querySelectorAll("#additionalTravelersSection input[name^='traveler_']").forEach(input => {
+        if (input.value.trim()) {
+            travelers.push(input.value.trim());
+        }
+    });
+
+    if (travelers.length) {
+        let table = document.createElement("table");
+        table.className = "table table-bordered table-sm";
+        
+        let thead = document.createElement("thead");
+        thead.innerHTML = `<tr><th>#</th><th>Traveler Name</th></tr>`;
+        table.appendChild(thead);
+
+        let tbody = document.createElement("tbody");
+        travelers.forEach((name, index) => {
+            let row = document.createElement("tr");
+            row.innerHTML = `<td>${index + 1}</td><td>${name}</td>`;
+            tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+
+        additionalTravelersContainer.appendChild(table);
+    } else {
+        additionalTravelersContainer.textContent = "None";
+    }
 });
