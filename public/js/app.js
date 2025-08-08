@@ -53,6 +53,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 badge.textContent = `Package For ${countryName}`;
             });
 
+            document.querySelectorAll(".visa-Selected").forEach(badge => {
+                badge.textContent = `VISA FOR : ${countryName}`;
+            });
+            document.querySelectorAll(".selected-country").forEach(badge => {
+                badge.textContent = `${countryName}`;
+            });
+
             document.querySelectorAll(".badge-flag").forEach(flagBadge => {
                 flagBadge.innerHTML = `<img src="${countryFlagImg}" alt="${countryName} Flag" style="width:30px;height:auto;">`;
             });
@@ -151,42 +158,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ===== SUBMIT BUTTON =====
     if (submitButton) {
-    submitButton.addEventListener('click', () => {
-        // 1️⃣ Log all selected form data
-        logApplicationData();
+        submitButton.addEventListener('click', () => {
+            // 1️⃣ Log all selected form data
+            logApplicationData();
 
-        // 2️⃣ Validate before submit
-        if (!selectedCountry || !selectedPackage || selectedTravelers.length === 0) {
-            alert('Please complete all steps before submitting.');
-            return;
-        }
+            // 2️⃣ Validate before submit
+            // if (!selectedCountry || !selectedPackage || selectedTravelers.length === 0) {
+            //     alert('Please complete all steps before submitting.');
+            //     return;
+            // }
 
-        // 3️⃣ Show success message
-        successMessage.classList.add('show');
+            // 3️⃣ Show success message
+            successMessage.classList.add('show');
 
-        // 4️⃣ Reset selections
-        countryCards.forEach(c => c.classList.remove('selected'));
-        packageCards.forEach(c => c.classList.remove('selected'));
-        travelerCards.forEach(c => c.classList.remove('selected'));
+            // 4️⃣ Reset selections
+            countryCards.forEach(c => c.classList.remove('selected'));
+            packageCards.forEach(c => c.classList.remove('selected'));
+            travelerCards.forEach(c => c.classList.remove('selected'));
 
-        selectedCountry = null;
-        selectedPackage = null;
-        selectedTravelers = [];
+            selectedCountry = null;
+            selectedPackage = null;
+            selectedTravelers = [];
 
-        // 5️⃣ Close Step 5 modal
-        const step5Modal = bootstrap.Modal.getInstance(document.getElementById('step5Modal'));
-        if (step5Modal) step5Modal.hide();
 
-        // 6️⃣ Open Traveller modal (Step 3)
-        const travelerModal = new bootstrap.Modal(document.getElementById('step3Modal'));
-        travelerModal.show();
+            //traveler
+            // Close all open modals
+            document.querySelectorAll('.modal.show').forEach(modalEl => {
+                const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+            });
 
-        // 7️⃣ Hide success message after delay
-        setTimeout(() => {
-            successMessage.classList.remove('show');
-        }, 3000);
-    });
-}
+            // Remove leftover backdrops just in case
+            document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+
+            // Now go to the step
+            document.querySelector('.step-tab[data-step="traveler"]').click();
+
+
+
+            // 7️⃣ Hide success message after delay
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 3000);
+        });
+    }
 
     // ===== LOGGING FUNCTION =====
     function logApplicationData() {

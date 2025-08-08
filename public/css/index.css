@@ -285,7 +285,7 @@
             background: var(--primary-color) !important;
             color: white !important;
             transform: translateY(-1px) !important;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
         }
 
         .traveler-card {
@@ -515,4 +515,18 @@
             background: #f8f8f8;
             padding: 5px;
             border-radius: 10px;
+        }
+
+        .packcstm{
+            background-color: #E0F2FE !important;
+            color: #0369A1 !important;
+            border-radius: 5px;
+            padding: 4px 12px;
+        }
+
+        .countrycstm {
+            background-color: #DCFCEF !important;
+            color: #15803D !important;
+            border-radius: 5px !important;
+            padding: 4px 12px !important;
         }
