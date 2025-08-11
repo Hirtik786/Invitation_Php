@@ -13,7 +13,7 @@ Perfect for visa assistance agencies, travel agents, or event organizers.
 
 ## 👨‍💻 Developed By
 - [Hirtik Kumar](https://github.com/Hirtik786)
-- [Murk Loungani](https://github.com/murkgithubusername)
+- [Murk Loungani](https://github.com/Murkloungani)
 
 
 ---
