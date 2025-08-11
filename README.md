@@ -1,61 +1,136 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌍 Travel Invitation Project
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel-based **multi-step travel invitation system** that allows users to:
+- Select travel packages
+- Choose destination countries
+- Fill in applicant details
+- Add additional travelers
+- Review all entered details before submitting
 
-## About Laravel
+Perfect for visa assistance agencies, travel agents, or event organizers.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 👨‍💻 Developed By
+- [Hirtik Kumar](https://github.com/Hirtik786)
+- [Murk Loungani](https://github.com/Murkloungani)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+---
+## ✨ Features
+- **Step-by-step form** workflow:
+  1. Package Selection
+  2. Country Selection
+  3. Applicant Details
+  4. Additional Travelers
+  5. Review & Submit
+- **Dynamic traveler management** — Add/remove travelers without page reload
+- **Country & package data** loaded dynamically via PHP
+- **Bootstrap 5 responsive design**
+- **Validation-ready form structure**
+- **Easily customizable UI**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## 🛠 Tech Stack
+| Layer          | Technology         |
+|----------------|-------------------|
+| Backend        | Laravel 10, PHP 8+ |
+| Frontend       | Bootstrap 5, HTML5, CSS3 |
+| Interactivity  | JavaScript |
+| Database       | MySQL / MariaDB    |
+| Hosting        | Any PHP-compatible server |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
+# 🌍 Travel Invitation System
 
-## Laravel Sponsors
+A Laravel-based multi-step travel invitation application where users can select packages, choose destination countries, add traveler details, and review their information before submission.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 📂 Project Structure
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```
+travel-invitation/
+│
+├── app/                 # Laravel app core files (Controllers, Models, etc.)
+├── bootstrap/           # Laravel bootstrap files
+├── config/              # Configuration files
+├── database/            # Migrations & Seeders
+│   ├── migrations/
+│   └── seeders/
+├── public/              # Public assets (CSS, JS, images)
+│   ├── css/
+│   ├── js/
+│   └── images/
+├── resources/
+│   ├── views/           # Blade templates (multi-step form pages)
+│   ├── js/              # Frontend JS (dynamic traveler addition)
+│   └── sass/            # Styles (Bootstrap / custom SCSS)
+├── routes/
+│   └── web.php          # Application routes
+├── storage/             # Storage for logs, cache, uploads
+├── tests/               # PHPUnit tests
+├── .env.example         # Example environment config
+├── artisan              # Laravel CLI tool
+├── composer.json        # PHP dependencies
+├── package.json         # Node.js dependencies
+└── README.md            # Documentation file
+```
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🚀 Installation & Setup
 
-## Code of Conduct
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/yourusername/travel-invitation.git
+cd travel-invitation
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 2️⃣ Install Dependencies
+```bash
+composer install
+npm install && npm run build
+```
 
-## Security Vulnerabilities
+### 3️⃣ Set Up Environment Variables
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Edit `.env` to match your database credentials:
+```makefile
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=travel_invitation
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## License
+### 4️⃣ Migrate the Database
+```bash
+php artisan migrate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 5️⃣ Run the Local Server
+```bash
+php artisan serve
+```
+Visit: **[http://localhost:8000](http://localhost:8000)**
+
+---
+
+## 📖 Usage Guide
+
+### Step-by-step Flow:
+1. **Select Package** — Choose from available travel or visa packages.  
+2. **Select Country** — Pick the destination country from a list.  
+3. **Applicant Details** — Enter main applicant information.  
+4. **Add Travelers** — Dynamically add travelers with name & relation.  
+5. **Review & Submit** — Preview all entered details before submission.  
+
+---
+
