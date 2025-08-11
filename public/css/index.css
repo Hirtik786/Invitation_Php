@@ -21,6 +21,10 @@
             border: none;
         }
 
+        nav {
+            margin-bottom: 20px;
+        }
+
         .header h1 {
             font-size: 2.5rem;
             color: #2d3748;
@@ -31,6 +35,7 @@
             background: none;
             padding: 0;
             margin-bottom: 30px;
+
         }
 
         .breadcrumb-item a {

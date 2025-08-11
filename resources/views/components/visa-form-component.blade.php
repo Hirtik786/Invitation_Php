@@ -258,7 +258,8 @@
                     <!-- Passport Upload -->
                     <div class="col-md-6 mb-4">
                         <label class="form-label fw-semibold">1 Valid Passport</label>
-                        <div class="upload-box" id="passportBox" onclick="document.getElementById('passportUpload').click()">
+                        <div class="upload-box" id="passportBox"
+                            onclick="document.getElementById('passportUpload').click()">
                             <span class="text-muted" id="passportFileName">Click to upload or drag and drop</span>
                             <input type="file" accept=".pdf,.jpg,.jpeg,.png" id="passportUpload" hidden>
                         </div>
@@ -267,7 +268,8 @@
                     <!-- Headshot Upload -->
                     <div class="col-md-6 mb-4">
                         <label class="form-label fw-semibold">2 Picture Headshot</label>
-                        <div class="upload-box" id="headshotBox" onclick="document.getElementById('headshotUpload').click()">
+                        <div class="upload-box" id="headshotBox"
+                            onclick="document.getElementById('headshotUpload').click()">
                             <span class="text-muted" id="headshotFileName">Click to upload or drag and drop</span>
                             <input type="file" accept=".jpg,.jpeg,.png" id="headshotUpload" hidden>
                         </div>
@@ -434,7 +436,7 @@
                         <div class="step-number">5</div> Review
                     </div>
                 </div>
-            </div> 
+            </div>
             <div class="modal-body scrollable-modal-body">
                 <p class="text-success">Please review all steps before submitting.</p>
                 <p>Once submitted, your application will be processed. Make sure all uploaded documents

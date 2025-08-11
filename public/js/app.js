@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const numberInput = document.getElementById("numTravellers");
     const additionalSection = document.getElementById("additionalTravelersSection");
 
+
     // ===== STEP NAVIGATION =====
     stepTabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -227,11 +228,41 @@ document.addEventListener('DOMContentLoaded', function () {
             }).join("")}
             </div>
             <div class="border-top pt-4 mt-4">
-                <button class="btn btn-success btn-submit" id="submitBtn" disabled>
+                <button class="btn btn-success btn-submit" id="submitBtn">
                     Submit Invitation
                 </button>
             </div>
         `;
+            // After updating innerHTML with new submitBtn:
+            const newSubmitBtn = document.getElementById('submitBtn');
+            newSubmitBtn.addEventListener("click", () => {
+                // Reset all forms on the page
+                document.querySelectorAll("form").forEach(form => form.reset());
+
+                // Clear any selections in your script's state variables if needed
+                selectedCountry = null;
+                selectedPackage = null;
+                selectedPackageName = "Selected Package";
+                selectedPackagePrice = null;
+                selectedFromCountry = "";
+                selectedLiveInCountry = "";
+                selectedTravelers = [];
+                uploadedDocuments = {};
+                personalDetails = {};
+
+                // Reset selected classes
+                document.querySelectorAll(".selected").forEach(el => el.classList.remove("selected"));
+
+                // Show the country selection step (step 1)
+                stepTabs.forEach(t => t.classList.remove("active"));
+                document.querySelector('.step-tab[data-step="country"]').classList.add("active");
+
+                stepContents.forEach(content => {
+                    content.classList.toggle("active", content.id === "country-step");
+                });
+                console.log("done");
+            });
+
 
             document.querySelectorAll('.modal.show').forEach(modalEl => {
                 const modalInstance = bootstrap.Modal.getInstance(modalEl);
