@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', () => {
 
     // ===== GLOBAL STATE =====
     let selectedCountry = null;
@@ -16,24 +16,52 @@ document.addEventListener('DOMContentLoaded', function () {
     const stepContents = document.querySelectorAll('.step-content');
     const countryCards = document.querySelectorAll('.country-card');
     const packageCards = document.querySelectorAll('.package-card');
-    const travelerCards = document.querySelectorAll('.traveler-card');
+    const travelerCardsContainer = document.getElementById('traveler-step');
     const submitButton = document.getElementById('submitButton');
     const successMessage = document.getElementById('successMessage');
     const numberInput = document.getElementById("numTravellers");
     const additionalSection = document.getElementById("additionalTravelersSection");
 
+    // ===== HELPER: Switch Step =====
+    function switchStep(stepName) {
+        stepTabs.forEach(tab => tab.classList.toggle('active', tab.getAttribute('data-step') === stepName));
+        stepContents.forEach(content => content.classList.toggle('active', content.id === `${stepName}-step`));
+    }
+
+    // ===== RESET FORM & STATE =====
+    function resetFormAndState() {
+        // Reset all forms
+        document.querySelectorAll('form').forEach(form => form.reset());
+
+        // Clear global state variables
+        selectedCountry = null;
+        selectedPackage = null;
+        selectedPackageName = "Selected Package";
+        selectedPackagePrice = null;
+        selectedFromCountry = "";
+        selectedLiveInCountry = "";
+        selectedTravelers = [];
+        uploadedDocuments = {};
+        personalDetails = {};
+
+        // Remove all selected classes
+        document.querySelectorAll('.selected').forEach(el => el.classList.remove('selected'));
+
+        // Clear dynamically generated traveler info
+        if (travelerCardsContainer) travelerCardsContainer.innerHTML = '';
+
+        // Clear additional travelers section
+        if (additionalSection) additionalSection.innerHTML = '';
+
+        // Switch to country selection step
+        switchStep('country');
+    }
 
     // ===== STEP NAVIGATION =====
     stepTabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const step = tab.getAttribute('data-step');
-
-            stepTabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            stepContents.forEach(content => {
-                content.classList.toggle('active', content.id === `${step}-step`);
-            });
+            switchStep(step);
         });
     });
 
@@ -46,25 +74,23 @@ document.addEventListener('DOMContentLoaded', function () {
             countryCards.forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
 
-            let countryName = card.querySelector(".country-name").textContent.trim();
-            let countryFlagImg = card.querySelector(".country-flag img").src;
+            const countryName = card.querySelector(".country-name").textContent.trim();
+            const countryFlagImg = card.querySelector(".country-flag img").src;
 
             document.querySelectorAll(".badge-package").forEach(badge => {
                 badge.textContent = `Package For ${countryName}`;
             });
-
             document.querySelectorAll(".visa-Selected").forEach(badge => {
                 badge.textContent = `VISA FOR : ${countryName}`;
             });
             document.querySelectorAll(".selected-country").forEach(badge => {
-                badge.textContent = `${countryName}`;
+                badge.textContent = countryName;
             });
-
             document.querySelectorAll(".badge-flag").forEach(flagBadge => {
                 flagBadge.innerHTML = `<img src="${countryFlagImg}" alt="${countryName} Flag" style="width:30px;height:auto;">`;
             });
 
-            document.querySelector('.step-tab[data-step="package"]').click();
+            switchStep('package');
         });
     });
 
@@ -96,8 +122,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // ===== STEP 4 - TRAVELER SELECTION =====
-    travelerCards.forEach(card => {
-        card.addEventListener('click', () => {
+    // Use event delegation for traveler cards (since they may be dynamically generated)
+    document.body.addEventListener('click', e => {
+        if (e.target.closest('.traveler-card')) {
+            const card = e.target.closest('.traveler-card');
             const travelerId = card.getAttribute('data-traveler');
             if (card.classList.contains('selected')) {
                 card.classList.remove('selected');
@@ -106,12 +134,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 card.classList.add('selected');
                 selectedTravelers.push(travelerId);
             }
-        });
+        }
     });
 
     // ===== DYNAMIC TRAVELER FIELDS =====
     if (numberInput && additionalSection) {
-        numberInput.addEventListener("input", function () {
+        numberInput.addEventListener("input", () => {
             const num = parseInt(numberInput.value) || 1;
             additionalSection.innerHTML = `<h5 class="fw-bold mb-4">Additional Travelers Information</h5>`;
             for (let i = 2; i <= num; i++) {
@@ -170,12 +198,13 @@ document.addEventListener('DOMContentLoaded', function () {
         logApplicationData();
     });
 
-    // ===== SUBMIT BUTTON =====
+    // ===== SUBMIT BUTTON (INITIAL) =====
     if (submitButton) {
         submitButton.addEventListener('click', () => {
             logApplicationData();
 
             const travelersData = [];
+
             travelersData.push({
                 name: `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`.trim(),
                 relation: "Customer",
@@ -193,86 +222,79 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            const travelerStepContainer = document.getElementById("traveler-step");
-            travelerStepContainer.innerHTML = `
-            <h2 class="section-title">Pick Who's Traveling</h2>
-            <p class="section-subtitle">Select the names of all individuals who will be traveling with you.</p>
-            <div class="row g-3">
-                ${travelersData.map((traveler, index) => {
-                const initial = traveler.name ? traveler.name.charAt(0).toUpperCase() : "?";
-                const gradientColors = [
-                    "linear-gradient(135deg, #f093fb, #f5576c)",
-                    "linear-gradient(135deg, #4facfe, #00f2fe)",
-                    "linear-gradient(135deg, #43e97b, #38f9d7)"
-                ];
-                const bg = index === 0 ? "" : `style="background:${gradientColors[index % gradientColors.length]}"`;
-                return `
-                        <div class="col-12 col-md-6 col-xl-4">
-                            <div class="traveler-card" data-traveler="${traveler.name.toLowerCase().replace(/\s+/g, '')}">
-                                <div class="d-flex align-items-start gap-3">
-                                    <div class="traveler-avatar" ${bg}>${initial}</div>
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex align-items-center gap-2 mb-2">
-                                            <span class="traveler-name">${traveler.name}</span>
-                                            <span class="relation-badge">${traveler.relation}</span>
-                                        </div>
-                                        <div class="traveler-meta">
-                                            <div>Date of birth: ${traveler.dob}</div>
-                                            <div>Passport Number: ${traveler.passport}</div>
+            // Render traveler selection cards dynamically
+            if (travelerCardsContainer) {
+                travelerCardsContainer.innerHTML = `
+                    <h2 class="section-title">Pick Who's Traveling</h2>
+                    <p class="section-subtitle">Select the names of all individuals who will be traveling with you.</p>
+                    <div class="row g-3">
+                        ${travelersData.map((traveler, index) => {
+                    const initial = traveler.name ? traveler.name.charAt(0).toUpperCase() : "?";
+                    const gradientColors = [
+                        "linear-gradient(135deg, #f093fb, #f5576c)",
+                        "linear-gradient(135deg, #4facfe, #00f2fe)",
+                        "linear-gradient(135deg, #43e97b, #38f9d7)"
+                    ];
+                    const bg = index === 0 ? "" : `style="background:${gradientColors[index % gradientColors.length]}"`;
+                    return `
+                            <div class="col-12 col-md-6 col-xl-4">
+                                <div class="traveler-card" data-traveler="${traveler.name.toLowerCase().replace(/\s+/g, '')}">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div class="traveler-avatar" ${bg}>${initial}</div>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex align-items-center gap-2 mb-2">
+                                                <span class="traveler-name">${traveler.name}</span>
+                                                <span class="relation-badge">${traveler.relation}</span>
+                                            </div>
+                                            <div class="traveler-meta">
+                                                <div>Date of birth: ${traveler.dob}</div>
+                                                <div>Passport Number: ${traveler.passport}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    `;
-            }).join("")}
-            </div>
-            <div class="border-top pt-4 mt-4">
-                <button class="btn btn-success btn-submit" id="submitBtn">
-                    Submit Invitation
-                </button>
-            </div>
-        `;
-            // After updating innerHTML with new submitBtn:
-            const newSubmitBtn = document.getElementById('submitBtn');
-            newSubmitBtn.addEventListener("click", () => {
-                // Reset all forms on the page
-                document.querySelectorAll("form").forEach(form => form.reset());
+                        `;
+                }).join('')}
+                    </div>
+                    <div class="border-top pt-4 mt-4">
+                        <button class="btn btn-success btn-submit" id="finalSubmitBtn">
+                            Submit Invitation
+                        </button>
+                    </div>
+                `;
+            }
 
-                // Clear any selections in your script's state variables if needed
-                selectedCountry = null;
-                selectedPackage = null;
-                selectedPackageName = "Selected Package";
-                selectedPackagePrice = null;
-                selectedFromCountry = "";
-                selectedLiveInCountry = "";
-                selectedTravelers = [];
-                uploadedDocuments = {};
-                personalDetails = {};
+            // Add event listener to dynamically created final submit button
+            const finalSubmitBtn = document.getElementById('finalSubmitBtn');
+            if (finalSubmitBtn) {
+                finalSubmitBtn.addEventListener('click', () => {
+                    resetFormAndState();
 
-                // Reset selected classes
-                document.querySelectorAll(".selected").forEach(el => el.classList.remove("selected"));
+                    // Close any open modals
+                    document.querySelectorAll('.modal.show').forEach(modalEl => {
+                        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                        if (modalInstance) modalInstance.hide();
+                    });
+                    document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
 
-                // Show the country selection step (step 1)
-                stepTabs.forEach(t => t.classList.remove("active"));
-                document.querySelector('.step-tab[data-step="country"]').classList.add("active");
+                    // Show success message
+                    successMessage.classList.add('show');
+                    setTimeout(() => successMessage.classList.remove('show'), 3000);
 
-                stepContents.forEach(content => {
-                    content.classList.toggle("active", content.id === "country-step");
+                    console.log("Form reset and back to country selection.");
                 });
-                console.log("done");
-            });
+            }
 
-
+            // Close modals triggered by submit (if any)
             document.querySelectorAll('.modal.show').forEach(modalEl => {
                 const modalInstance = bootstrap.Modal.getInstance(modalEl);
                 if (modalInstance) modalInstance.hide();
             });
             document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
 
-            document.querySelector('.step-tab[data-step="traveler"]').click();
-            successMessage.classList.add('show');
-            setTimeout(() => successMessage.classList.remove('show'), 3000);
+            // Move user to traveler selection step tab
+            switchStep('traveler');
         });
     }
 
@@ -292,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("\n=== All Form Fields ===");
         document.querySelectorAll("input, select, textarea").forEach(el => {
             const name = el.name || "(no name)";
-            let value = "";
+            let value;
             if (el.type === "checkbox" || el.type === "radio") {
                 value = el.checked ? "Checked" : "Unchecked";
             } else {
@@ -304,8 +326,33 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("================================");
     }
 
-});
+    // ===== FILE UPLOAD HANDLER HELPER =====
+    function handleFileUpload(inputId, boxId, fileNameId) {
+        const input = document.getElementById(inputId);
+        const box = document.getElementById(boxId);
+        const fileNameDisplay = document.getElementById(fileNameId);
 
+        if (!input || !box || !fileNameDisplay) return;
+
+        input.addEventListener("change", function () {
+            if (this.files && this.files.length > 0) {
+                const fileName = this.files[0].name;
+                fileNameDisplay.textContent = fileName;
+                box.classList.add("accepted");
+            } else {
+                fileNameDisplay.textContent = "Click to upload or drag and drop";
+                box.classList.remove("accepted");
+            }
+        });
+    }
+
+    handleFileUpload("passportUpload", "passportBox", "passportFileName");
+    handleFileUpload("headshotUpload", "headshotBox", "headshotFileName");
+
+}); // DOMContentLoaded end
+
+
+// Separate listener for step4NextBtn outside DOMContentLoaded to ensure element is loaded
 document.getElementById("step4NextBtn")?.addEventListener("click", function () {
     document.querySelector(".review-plan-name").textContent = window.selectedPackageName || "";
     document.querySelector(".review-description").textContent = "Invitation processing time is 48 hours";
@@ -336,7 +383,7 @@ document.getElementById("step4NextBtn")?.addEventListener("click", function () {
     const additionalTravelersContainer = document.querySelector(".review-additional-travelers");
     additionalTravelersContainer.innerHTML = "";
 
-    let travelers = [];
+    const travelers = [];
     const numTravelers = parseInt(document.getElementById("numTravellers").value) || 1;
 
     for (let i = 2; i <= numTravelers; i++) {
@@ -349,9 +396,9 @@ document.getElementById("step4NextBtn")?.addEventListener("click", function () {
     }
 
     if (travelers.length && travelers.some(t => t.name)) {
-        let table = document.createElement("table");
+        const table = document.createElement("table");
         table.className = "table table-bordered table-sm";
-        let thead = document.createElement("thead");
+        const thead = document.createElement("thead");
         thead.innerHTML = `
             <tr>
                 <th>#</th>
@@ -362,10 +409,10 @@ document.getElementById("step4NextBtn")?.addEventListener("click", function () {
             </tr>`;
         table.appendChild(thead);
 
-        let tbody = document.createElement("tbody");
+        const tbody = document.createElement("tbody");
         travelers.forEach((traveler, index) => {
             if (traveler.name) {
-                let row = document.createElement("tr");
+                const row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td>${traveler.name}</td>
@@ -382,23 +429,3 @@ document.getElementById("step4NextBtn")?.addEventListener("click", function () {
         additionalTravelersContainer.textContent = "None";
     }
 });
-
-function handleFileUpload(inputId, boxId, fileNameId) {
-    const input = document.getElementById(inputId);
-    const box = document.getElementById(boxId);
-    const fileNameDisplay = document.getElementById(fileNameId);
-
-    input.addEventListener("change", function () {
-        if (this.files && this.files.length > 0) {
-            const fileName = this.files[0].name;
-            fileNameDisplay.textContent = fileName;
-            box.classList.add("accepted");
-        } else {
-            fileNameDisplay.textContent = "Click to upload or drag and drop";
-            box.classList.remove("accepted");
-        }
-    });
-}
-
-handleFileUpload("passportUpload", "passportBox", "passportFileName");
-handleFileUpload("headshotUpload", "headshotBox", "headshotFileName");
