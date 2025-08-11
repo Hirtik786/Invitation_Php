@@ -362,6 +362,10 @@
                         <input type="text" class="form-control" id="passportNumber">
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label">Date Of Birth</label>
+                        <input type="date" class="form-control" id="DOB">
+                    </div>
+                    <div class="col-md-6">
                         <label class="form-label">Profession</label>
                         <input type="text" class="form-control" id="profession">
                     </div>
@@ -473,6 +477,10 @@
                         <tr>
                             <th>Passport Number</th>
                             <td class="review-passport"></td>
+                        </tr>
+                        <tr>
+                            <th>Date Of Birth</th>
+                            <td class="review-dob"></td>
                         </tr>
                         <tr>
                             <th>Profession</th>

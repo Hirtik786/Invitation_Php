@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
             countryCards.forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
 
-            // Update package badges + flags
             let countryName = card.querySelector(".country-name").textContent.trim();
             let countryFlagImg = card.querySelector(".country-flag img").src;
 
@@ -129,10 +128,24 @@ document.addEventListener('DOMContentLoaded', function () {
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Phone Number</label>
+                            <label class="form-label">Relation</label>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                                <input type="text" class="form-control" name="traveler_${i}_phone" placeholder="Phone Number">
+                                <span class="input-group-text"><i class="bi bi-people"></i></span>
+                                <input type="text" class="form-control" name="traveler_${i}_relation" placeholder="Relation">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Passport Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-passport"></i></span>
+                                <input type="text" class="form-control" name="traveler_${i}_passport" placeholder="Passport Number">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Date Of Birth</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                <input type="date" class="form-control" name="traveler_${i}_dob" placeholder="Date Of Birth">
                             </div>
                         </div>
                     </div>
@@ -159,21 +172,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // ===== SUBMIT BUTTON =====
     if (submitButton) {
         submitButton.addEventListener('click', () => {
-            // 1️⃣ Log all selected form data
             logApplicationData();
 
-            // ===== COLLECT TRAVELER DATA =====
             const travelersData = [];
-
-            // Main traveler
             travelersData.push({
                 name: `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`.trim(),
                 relation: "Customer",
-                dob: document.getElementById("dob")?.value || "",
+                dob: document.getElementById("DOB")?.value || "",
                 passport: document.getElementById("passportNumber")?.value || ""
             });
 
-            // Additional travelers
             const numTravelers = parseInt(document.getElementById("numTravellers").value) || 1;
             for (let i = 2; i <= numTravelers; i++) {
                 travelersData.push({
@@ -184,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            // ===== BUILD TRAVELER STEP HTML =====
             const travelerStepContainer = document.getElementById("traveler-step");
             travelerStepContainer.innerHTML = `
             <h2 class="section-title">Pick Who's Traveling</h2>
@@ -226,22 +233,17 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         `;
 
-            // ===== CLOSE ANY OPEN MODALS =====
             document.querySelectorAll('.modal.show').forEach(modalEl => {
                 const modalInstance = bootstrap.Modal.getInstance(modalEl);
                 if (modalInstance) modalInstance.hide();
             });
             document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
 
-            // ===== SWITCH TO TRAVELER STEP =====
             document.querySelector('.step-tab[data-step="traveler"]').click();
-
-            // ===== SHOW SUCCESS MESSAGE =====
             successMessage.classList.add('show');
             setTimeout(() => successMessage.classList.remove('show'), 3000);
         });
     }
-
 
     // ===== LOGGING FUNCTION =====
     function logApplicationData() {
@@ -272,71 +274,83 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
+
 document.getElementById("step4NextBtn")?.addEventListener("click", function () {
-    // Plan details
     document.querySelector(".review-plan-name").textContent = window.selectedPackageName || "";
     document.querySelector(".review-description").textContent = "Invitation processing time is 48 hours";
     document.querySelector(".review-duration").textContent = "96 Hours Valid";
 
-    // Personal details
     const firstName = document.getElementById("firstName").value || "";
     const lastName = document.getElementById("lastName").value || "";
     document.querySelector(".review-name").textContent = `${firstName} ${lastName}`.trim();
     document.querySelector(".review-contact").textContent = document.getElementById("phoneNumber").value || "";
     document.querySelector(".review-email").textContent = document.getElementById("emailAddress").value || "";
 
-    // Country info
     document.querySelector(".review-from-country").textContent =
         document.getElementById("fromCountry").value || document.getElementById("fromCountry1")?.value || "";
     document.querySelector(".review-livein-country").textContent =
         document.getElementById("liveInCountry").value || document.getElementById("liveInCountry1")?.value || "";
 
-    // Passport & profession
     document.querySelector(".review-passport").textContent = document.getElementById("passportNumber").value || "";
     document.querySelector(".review-profession").textContent = document.getElementById("profession").value || "";
 
-    // Travel dates
     document.querySelector(".review-travel-date").textContent = document.getElementById("travelDateFrom").value || "";
     document.querySelector(".review-return-date").textContent = document.getElementById("travelDateTo").value || "";
+    document.querySelector(".review-dob").textContent = document.getElementById("DOB").value || "";
 
-    // Purpose & number of travellers
     document.querySelector(".review-purpose").textContent = document.getElementById("travelPurpose").value || "";
     document.querySelector(".review-num-travelers").textContent = document.getElementById("numTravellers").value || "";
 
-    // Additional Travelers Table
+    // ===== FULL ADDITIONAL TRAVELERS TABLE =====
     const additionalTravelersContainer = document.querySelector(".review-additional-travelers");
-    additionalTravelersContainer.innerHTML = ""; // Clear old content
+    additionalTravelersContainer.innerHTML = "";
 
     let travelers = [];
-    document.querySelectorAll("#additionalTravelersSection input[name^='traveler_']").forEach(input => {
-        if (input.value.trim()) {
-            travelers.push(input.value.trim());
-        }
-    });
+    const numTravelers = parseInt(document.getElementById("numTravellers").value) || 1;
 
-    if (travelers.length) {
+    for (let i = 2; i <= numTravelers; i++) {
+        travelers.push({
+            name: document.querySelector(`[name="traveler_${i}_name"]`)?.value.trim() || "",
+            relation: document.querySelector(`[name="traveler_${i}_relation"]`)?.value.trim() || "Family",
+            dob: document.querySelector(`[name="traveler_${i}_dob"]`)?.value || "",
+            passport: document.querySelector(`[name="traveler_${i}_passport"]`)?.value || ""
+        });
+    }
+
+    if (travelers.length && travelers.some(t => t.name)) {
         let table = document.createElement("table");
         table.className = "table table-bordered table-sm";
-
         let thead = document.createElement("thead");
-        thead.innerHTML = `<tr><th>#</th><th>Traveler Name</th></tr>`;
+        thead.innerHTML = `
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Relation</th>
+                <th>Date of Birth</th>
+                <th>Passport Number</th>
+            </tr>`;
         table.appendChild(thead);
 
         let tbody = document.createElement("tbody");
-        travelers.forEach((name, index) => {
-            let row = document.createElement("tr");
-            row.innerHTML = `<td>${index + 1}</td><td>${name}</td>`;
-            tbody.appendChild(row);
+        travelers.forEach((traveler, index) => {
+            if (traveler.name) {
+                let row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${traveler.name}</td>
+                    <td>${traveler.relation}</td>
+                    <td>${traveler.dob}</td>
+                    <td>${traveler.passport}</td>
+                `;
+                tbody.appendChild(row);
+            }
         });
         table.appendChild(tbody);
-
         additionalTravelersContainer.appendChild(table);
     } else {
         additionalTravelersContainer.textContent = "None";
     }
 });
-
-
 
 function handleFileUpload(inputId, boxId, fileNameId) {
     const input = document.getElementById(inputId);
