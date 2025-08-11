@@ -158,47 +158,47 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ===== SUBMIT BUTTON =====
     if (submitButton) {
-    submitButton.addEventListener('click', () => {
-        // 1️⃣ Log all selected form data
-        logApplicationData();
+        submitButton.addEventListener('click', () => {
+            // 1️⃣ Log all selected form data
+            logApplicationData();
 
-        // ===== COLLECT TRAVELER DATA =====
-        const travelersData = [];
+            // ===== COLLECT TRAVELER DATA =====
+            const travelersData = [];
 
-        // Main traveler
-        travelersData.push({
-            name: `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`.trim(),
-            relation: "Customer",
-            dob: document.getElementById("dob")?.value || "",
-            passport: document.getElementById("passportNumber")?.value || ""
-        });
-
-        // Additional travelers
-        const numTravelers = parseInt(document.getElementById("numTravellers").value) || 1;
-        for (let i = 2; i <= numTravelers; i++) {
+            // Main traveler
             travelersData.push({
-                name: document.querySelector(`[name="traveler_${i}_name"]`)?.value || "",
-                relation: document.querySelector(`[name="traveler_${i}_relation"]`)?.value || "Family",
-                dob: document.querySelector(`[name="traveler_${i}_dob"]`)?.value || "",
-                passport: document.querySelector(`[name="traveler_${i}_passport"]`)?.value || ""
+                name: `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`.trim(),
+                relation: "Customer",
+                dob: document.getElementById("dob")?.value || "",
+                passport: document.getElementById("passportNumber")?.value || ""
             });
-        }
 
-        // ===== BUILD TRAVELER STEP HTML =====
-        const travelerStepContainer = document.getElementById("traveler-step");
-        travelerStepContainer.innerHTML = `
+            // Additional travelers
+            const numTravelers = parseInt(document.getElementById("numTravellers").value) || 1;
+            for (let i = 2; i <= numTravelers; i++) {
+                travelersData.push({
+                    name: document.querySelector(`[name="traveler_${i}_name"]`)?.value || "",
+                    relation: document.querySelector(`[name="traveler_${i}_relation"]`)?.value || "Family",
+                    dob: document.querySelector(`[name="traveler_${i}_dob"]`)?.value || "",
+                    passport: document.querySelector(`[name="traveler_${i}_passport"]`)?.value || ""
+                });
+            }
+
+            // ===== BUILD TRAVELER STEP HTML =====
+            const travelerStepContainer = document.getElementById("traveler-step");
+            travelerStepContainer.innerHTML = `
             <h2 class="section-title">Pick Who's Traveling</h2>
             <p class="section-subtitle">Select the names of all individuals who will be traveling with you.</p>
             <div class="row g-3">
                 ${travelersData.map((traveler, index) => {
-                    const initial = traveler.name ? traveler.name.charAt(0).toUpperCase() : "?";
-                    const gradientColors = [
-                        "linear-gradient(135deg, #f093fb, #f5576c)",
-                        "linear-gradient(135deg, #4facfe, #00f2fe)",
-                        "linear-gradient(135deg, #43e97b, #38f9d7)"
-                    ];
-                    const bg = index === 0 ? "" : `style="background:${gradientColors[index % gradientColors.length]}"`;
-                    return `
+                const initial = traveler.name ? traveler.name.charAt(0).toUpperCase() : "?";
+                const gradientColors = [
+                    "linear-gradient(135deg, #f093fb, #f5576c)",
+                    "linear-gradient(135deg, #4facfe, #00f2fe)",
+                    "linear-gradient(135deg, #43e97b, #38f9d7)"
+                ];
+                const bg = index === 0 ? "" : `style="background:${gradientColors[index % gradientColors.length]}"`;
+                return `
                         <div class="col-12 col-md-6 col-xl-4">
                             <div class="traveler-card" data-traveler="${traveler.name.toLowerCase().replace(/\s+/g, '')}">
                                 <div class="d-flex align-items-start gap-3">
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             </div>
                         </div>
                     `;
-                }).join("")}
+            }).join("")}
             </div>
             <div class="border-top pt-4 mt-4">
                 <button class="btn btn-success btn-submit" id="submitBtn" disabled>
@@ -226,21 +226,21 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         `;
 
-        // ===== CLOSE ANY OPEN MODALS =====
-        document.querySelectorAll('.modal.show').forEach(modalEl => {
-            const modalInstance = bootstrap.Modal.getInstance(modalEl);
-            if (modalInstance) modalInstance.hide();
+            // ===== CLOSE ANY OPEN MODALS =====
+            document.querySelectorAll('.modal.show').forEach(modalEl => {
+                const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                if (modalInstance) modalInstance.hide();
+            });
+            document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+
+            // ===== SWITCH TO TRAVELER STEP =====
+            document.querySelector('.step-tab[data-step="traveler"]').click();
+
+            // ===== SHOW SUCCESS MESSAGE =====
+            successMessage.classList.add('show');
+            setTimeout(() => successMessage.classList.remove('show'), 3000);
         });
-        document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
-
-        // ===== SWITCH TO TRAVELER STEP =====
-        document.querySelector('.step-tab[data-step="traveler"]').click();
-
-        // ===== SHOW SUCCESS MESSAGE =====
-        successMessage.classList.add('show');
-        setTimeout(() => successMessage.classList.remove('show'), 3000);
-    });
-}
+    }
 
 
     // ===== LOGGING FUNCTION =====
@@ -317,7 +317,7 @@ document.getElementById("step4NextBtn")?.addEventListener("click", function () {
     if (travelers.length) {
         let table = document.createElement("table");
         table.className = "table table-bordered table-sm";
-        
+
         let thead = document.createElement("thead");
         thead.innerHTML = `<tr><th>#</th><th>Traveler Name</th></tr>`;
         table.appendChild(thead);
@@ -335,3 +335,25 @@ document.getElementById("step4NextBtn")?.addEventListener("click", function () {
         additionalTravelersContainer.textContent = "None";
     }
 });
+
+
+
+function handleFileUpload(inputId, boxId, fileNameId) {
+    const input = document.getElementById(inputId);
+    const box = document.getElementById(boxId);
+    const fileNameDisplay = document.getElementById(fileNameId);
+
+    input.addEventListener("change", function () {
+        if (this.files && this.files.length > 0) {
+            const fileName = this.files[0].name;
+            fileNameDisplay.textContent = fileName;
+            box.classList.add("accepted");
+        } else {
+            fileNameDisplay.textContent = "Click to upload or drag and drop";
+            box.classList.remove("accepted");
+        }
+    });
+}
+
+handleFileUpload("passportUpload", "passportBox", "passportFileName");
+handleFileUpload("headshotUpload", "headshotBox", "headshotFileName");

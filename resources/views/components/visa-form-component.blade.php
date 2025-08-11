@@ -119,7 +119,7 @@
             </div>
 
             <!-- Body -->
-            <div class="modal-body">
+            <div class="modal-body scrollable-modal-body">
 
                 <div class="text-center mb-4">
                     <h5 class="fw-semibold">Let's get your Visa(s)</h5>
@@ -207,7 +207,6 @@
         </div>
     </div>
 </div>
-
 <!-- Step 3 Modal -->
 <div class="modal fade" id="step3Modal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -256,28 +255,22 @@
                 <p class="text-muted small mb-4">Accepted Formats: <strong>PDF, JPG, PNG</strong></p>
 
                 <div class="row">
+                    <!-- Passport Upload -->
                     <div class="col-md-6 mb-4">
                         <label class="form-label fw-semibold">1 Valid Passport</label>
-                        <div class="upload-box" onclick="document.getElementById('passportUpload').click()">
-                            <span class="text-muted">Click to upload or drag and drop</span>
-                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" id="passportUpload"
-                                onchange="previewFile(this, 'passportPreview')" hidden>
+                        <div class="upload-box" id="passportBox" onclick="document.getElementById('passportUpload').click()">
+                            <span class="text-muted" id="passportFileName">Click to upload or drag and drop</span>
+                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" id="passportUpload" hidden>
                         </div>
-                        <!-- <div class="upload-preview text-center">
-                                <img id="passportPreview" src="assets/img/your-upload.jpg" alt="Uploaded Passport">
-                            </div> -->
                     </div>
 
+                    <!-- Headshot Upload -->
                     <div class="col-md-6 mb-4">
                         <label class="form-label fw-semibold">2 Picture Headshot</label>
-                        <div class="upload-box" onclick="document.getElementById('headshotUpload').click()">
-                            <span class="text-muted">Click to upload or drag and drop</span>
-                            <input type="file" accept=".jpg,.jpeg,.png" id="headshotUpload"
-                                onchange="previewFile(this, 'headshotPreview')" hidden>
+                        <div class="upload-box" id="headshotBox" onclick="document.getElementById('headshotUpload').click()">
+                            <span class="text-muted" id="headshotFileName">Click to upload or drag and drop</span>
+                            <input type="file" accept=".jpg,.jpeg,.png" id="headshotUpload" hidden>
                         </div>
-                        <!-- <div class="upload-preview text-center">
-                                <img id="headshotPreview" src="assets/img/your-upload.jpg" alt="Uploaded Headshot">
-                            </div> -->
                     </div>
                 </div>
             </div>
@@ -289,7 +282,7 @@
                 <div class="d-flex align-items-center gap-3">
                     <div class="text-muted small">Step 3 of 5</div>
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#step4Modal"
-                        data-bs-dismiss="modal">Next</button>
+                        data-bs-dismiss="modal">Details</button>
                 </div>
             </div>
         </div>
@@ -401,7 +394,7 @@
                 <div class="d-flex align-items-center gap-3">
                     <div class="text-muted small">Step 4 of 5</div>
                     <button class="btn btn-primary" id="step4NextBtn" data-bs-target="#step5Modal"
-                        data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+                        data-bs-toggle="modal" data-bs-dismiss="modal">Review</button>
                 </div>
             </div>
         </div>

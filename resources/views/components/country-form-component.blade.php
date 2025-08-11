@@ -39,8 +39,8 @@ $countries = [
 
     <div class="row g-3">
         <?php foreach ($countries as $country): ?>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-            <div class="country-card" data-country="<?= htmlspecialchars($country['slug']) ?>">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <div class="country-card h-100" data-country="<?= htmlspecialchars($country['slug']) ?>">
                 <div class="country-flag">
                     <img src="<?= htmlspecialchars($country['flag']) ?>"
                         alt="<?= htmlspecialchars($country['name']) ?> Flag" class="img-fluid" />
@@ -48,7 +48,7 @@ $countries = [
                 <div class="country-name"><?= htmlspecialchars($country['name']) ?></div>
             </div>
         </div>
-
         <?php endforeach; ?>
     </div>
+
 </div>

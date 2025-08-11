@@ -464,7 +464,7 @@
         .step.inactive .step-number {
             background: rgba(255, 255, 255, 0.3);
         }
-        
+
         .upload-box {
             border: 2px dashed #94a3b8;
             padding: 20px;
@@ -530,4 +530,11 @@
             color: #15803D !important;
             border-radius: 5px !important;
             padding: 4px 12px !important;
+        }
+
+        .upload-box.accepted {
+            border: 2px solid #28a745;
+            /* Bootstrap green */
+            background-color: #f6fff8;
+            /* light green background */
         }
