@@ -52,7 +52,6 @@
                         <span class="badge badge-package">Package For Turkey</span>
                     </div>
                 </div>
-
                 <div class="package-pricing mb-3">
                     <div class="price-main">$475 USD</div>
                     <div class="d-flex align-items-center gap-2 mt-1">

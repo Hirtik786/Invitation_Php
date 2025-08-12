@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 flagBadge.innerHTML = `<img src="${countryFlagImg}" alt="${countryName} Flag" style="width:30px;height:auto;">`;
             });
 
+
             switchStep('package');
         });
     });
@@ -109,17 +110,109 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== STEP 2.1 - DROPDOWNS =====
     document.getElementById("fromCountry1")?.addEventListener("change", function () {
         selectedFromCountry = this.value;
-    });
-    document.getElementById("liveInCountry1")?.addEventListener("change", function () {
-        selectedLiveInCountry = this.value;
+        document.getElementById("fromCountry").value = selectedFromCountry; // set fixed field
     });
 
-    // ===== STEP 3 - DOCUMENT UPLOAD =====
+    document.getElementById("liveInCountry1")?.addEventListener("change", function () {
+        selectedLiveInCountry = this.value;
+        document.getElementById("liveInCountry").value = selectedLiveInCountry; // set fixed field
+    });
+
+
+    // ===== STEP 3 - DOCUMENT UPLOAD  =====
     document.querySelectorAll(".document-upload").forEach(input => {
-        input.addEventListener("change", () => {
-            uploadedDocuments[input.name] = input.files[0]?.name || null;
+        input.addEventListener("change", function () {
+            const file = this.files[0];
+            const uploadArea = this.parentElement.querySelector('.upload-area-custom');
+            const uploadContent = uploadArea.querySelector('.upload-content');
+            const uploadPreview = uploadArea.querySelector('.upload-preview');
+            const uploadFilename = uploadArea.querySelector('.upload-filename');
+            const errorDiv = this.parentElement.querySelector('.step3-error');
+
+            if (file) {
+                // Store the uploaded file
+                uploadedDocuments[this.name] = file.name;
+
+                // Update UI to show uploaded state
+                uploadArea.classList.add('uploaded');
+                uploadContent.style.display = 'none';
+                uploadPreview.style.display = 'block';
+                uploadFilename.textContent = file.name;
+
+                // Hide error message
+                if (errorDiv) errorDiv.style.display = 'none';
+
+                // console.log(Uploaded ${ this.name }:, file.name);
+            } else {
+                // Reset to initial state
+                uploadArea.classList.remove('uploaded');
+                uploadContent.style.display = 'block';
+                uploadPreview.style.display = 'none';
+                uploadFilename.textContent = '';
+
+                delete uploadedDocuments[this.name];
+            }
         });
     });
+    (function () {
+        const nextBtnStep3 = document.getElementById('nextStep3Btn');
+        if (!nextBtnStep3) return;
+
+        const requiredUploads = [
+            { name: 'passport', msg: 'Please upload your passport document' },
+            { name: 'headshot', msg: 'Please upload your picture/headshot' }
+        ];
+
+        // Hide error messages when files are uploaded
+        document.querySelectorAll('.document-upload').forEach(inputEl => {
+            inputEl.addEventListener('change', function () {
+                if (this.files[0]) {
+                    // Find error div within the same column
+                    const colContainer = this.closest('.col-md-6');
+                    const errorDiv = colContainer.querySelector('.step3-error');
+                    if (errorDiv) errorDiv.style.display = 'none';
+                }
+            });
+        });
+
+        nextBtnStep3.addEventListener('click', function () {
+            let allUploaded = true;
+
+            // Clear all previous errors
+            document.querySelectorAll('.step3-error').forEach(err => {
+                err.style.display = 'none';
+                err.textContent = '';
+            });
+
+            // Check each required upload
+            requiredUploads.forEach(({ name, msg }) => {
+                const inputEl = document.querySelector(`input[name="${name}"]`);
+                if (!inputEl) {
+                    allUploaded = false;
+                    return;
+                }
+
+                const colContainer = inputEl.closest('.col-md-6');
+                const errorDiv = colContainer.querySelector('.step3-error');
+
+                if (!inputEl.files || !inputEl.files[0]) {
+                    errorDiv.textContent = msg;
+                    errorDiv.style.display = 'block';
+                    allUploaded = false;
+                }
+            });
+
+            // If all files uploaded, proceed to next step
+            if (allUploaded) {
+                const step3Modal = bootstrap.Modal.getInstance(document.getElementById('step3Modal'));
+                step3Modal.hide();
+
+                const step4Modal = new bootstrap.Modal(document.getElementById('step4Modal'));
+                step4Modal.show();
+            }
+        });
+    })();
+
 
     // ===== STEP 4 - TRAVELER SELECTION =====
     // Use event delegation for traveler cards (since they may be dynamically generated)
@@ -136,6 +229,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+
+
+
+
+
+
 
     // ===== DYNAMIC TRAVELER FIELDS =====
     if (numberInput && additionalSection) {
@@ -183,6 +283,102 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+
+    // ===== STEP 4 VALIDATION =====
+    (function () {
+        const nextBtnStep4 = document.getElementById('step4NextBtn');
+        if (!nextBtnStep4) return;
+
+        const requiredFields = [
+            { name: 'first_name', msg: 'First name is required' },
+            { name: 'last_name', msg: 'Last name is required' },
+            { name: 'phone_number', msg: 'Phone number is required' },
+            { name: 'email', msg: 'Email address is required' },
+            { name: 'passport_number', msg: 'Passport number is required' },
+            { name: 'dob', msg: 'Date of Birth is required' },
+            { name: 'profession', msg: 'Profession is required' },
+            { name: 'travel_date_from', msg: 'Travel start date is required' },
+            { name: 'travel_date_to', msg: 'Travel end date is required' },
+            { name: 'travel_purpose', msg: 'Travel purpose is required' }
+        ];
+
+        // Hide errors when user types
+        requiredFields.forEach(({ name }) => {
+            const input = document.querySelector(`input[name = "${name}"]`);
+            if (input) {
+                input.addEventListener('input', function () {
+                    const errorDiv = this.nextElementSibling;
+                    if (errorDiv && errorDiv.classList.contains('step4-error') && this.value.trim()) {
+                        errorDiv.style.display = 'none';
+                        this.classList.remove('is-invalid');
+                    }
+                });
+            }
+        });
+
+        nextBtnStep4.addEventListener('click', function (e) {
+            e.preventDefault();
+            let allValid = true;
+
+            // Clear previous errors
+            document.querySelectorAll('#step4Modal .step4-error').forEach(err => {
+                err.style.display = 'none';
+            });
+            document.querySelectorAll('#step4Modal .form-control').forEach(input => {
+                input.classList.remove('is-invalid');
+            });
+
+            // Validate each field
+            requiredFields.forEach(({ name, msg }) => {
+                const input = document.querySelector(`input[name = "${name}"]`);
+                const errorDiv = input.nextElementSibling;
+
+                if (!input.value.trim()) {
+                    errorDiv.textContent = msg;
+                    errorDiv.style.display = 'block';
+                    input.classList.add('is-invalid');
+                    allValid = false;
+                }
+            });
+
+            // Email validation
+            const emailInput = document.querySelector(`input[name="email"]`);
+            const emailError = emailInput.nextElementSibling;
+            if (emailInput.value.trim() && !isValidEmail(emailInput.value)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailError.style.display = 'block';
+                emailInput.classList.add('is-invalid');
+                allValid = false;
+            }
+
+            // Date validation
+            const startDate = document.querySelector(`input[name="travel_date_from"]`);
+            const endDate = document.querySelector('input[name="travel_date_to"]');
+            const endDateError = endDate.nextElementSibling;
+
+            if (startDate.value && endDate.value && new Date(endDate.value) <= new Date(startDate.value)) {
+                endDateError.textContent = 'Return date must be after departure date';
+                endDateError.style.display = 'block';
+                endDate.classList.add('is-invalid');
+                allValid = false;
+            }
+
+            // Proceed if valid
+            if (allValid) {
+                const step4Modal = bootstrap.Modal.getInstance(document.getElementById('step4Modal'));
+                step4Modal.hide();
+                const step5Modal = new bootstrap.Modal(document.getElementById('step5Modal'));
+                step5Modal.show();
+            }
+        });
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    })();
+
 
     // ===== STEP 5 - REVIEW MODALS =====
     document.getElementById('step3Modal')?.addEventListener('show.bs.modal', function () {
@@ -429,3 +625,164 @@ document.getElementById("step4NextBtn")?.addEventListener("click", function () {
         additionalTravelersContainer.textContent = "None";
     }
 });
+document.querySelectorAll('.details-btn').forEach(btn => {
+    btn.addEventListener('click', function (e) {
+        e.preventDefault(); // stops reload
+        // show modal or fetch data here
+        console.log('Details button clicked');
+    });
+});
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('submitBtn').addEventListener('click', function (e) {
+        console.log("done");
+        e.preventDefault();
+
+        // Optional: client-side check before submit
+        const checkbox = document.querySelector('input[name="confirm_decision"]');
+        if (!checkbox.checked) {
+            alert('You must confirm your decision before submitting.');
+            return;
+        }
+
+        // Now submit the form manually
+        document.getElementById('visaForm').submit();
+    });
+});
+document.getElementById('submitBtn').addEventListener('click', function () {
+    const form = document.getElementById('visaForm');
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+        }
+    })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data); // Show in console
+            // Or update HTML with response
+        })
+        .catch(err => console.error(err));
+});
+
+
+//BY Murk
+// step 1 validation
+const fromCountryEl = document.getElementById('fromCountry1');
+const liveInCountryEl = document.getElementById('liveInCountry1');
+const nextBtnStep1 = document.querySelector('#step1Modal #nextStep1Btn');
+
+// Create error message containers
+const fromError = document.createElement('div');
+fromError.className = 'invalid-feedback d-block text-danger small';
+
+const liveInError = document.createElement('div');
+liveInError.className = 'invalid-feedback d-block text-danger small';
+
+// Append error containers under the selects
+if (fromCountryEl) fromCountryEl.parentNode.appendChild(fromError);
+if (liveInCountryEl) liveInCountryEl.parentNode.appendChild(liveInError);
+
+// Validation function
+function validateStep1() {
+    let valid = true;
+    fromError.textContent = '';
+    liveInError.textContent = '';
+
+    fromCountryEl.classList.remove('is-invalid');
+    liveInCountryEl.classList.remove('is-invalid');
+
+    if (!fromCountryEl.value) {
+        fromError.textContent = 'Please select your origin country';
+        fromCountryEl.classList.add('is-invalid');
+        valid = false;
+    }
+
+    if (!liveInCountryEl.value) {
+        liveInError.textContent = 'Please select the country you live in';
+        liveInCountryEl.classList.add('is-invalid');
+        valid = false;
+    }
+
+    // if (fromCountryEl.value && liveInCountryEl.value && fromCountryEl.value === liveInCountryEl.value) {
+    //    liveInError.textContent = 'Origin and destination countries must be different';
+    //     liveInCountryEl.classList.add('is-invalid');
+    //     valid = false; 
+    // }
+
+    return valid;
+}
+// Block "Next" button if validation fails
+if (nextBtnStep1) {
+    nextBtnStep1.addEventListener('click', function () {
+        if (validateStep1()) {
+            // If valid, close Step 1 and open Step 2 manually
+            const step1Modal = bootstrap.Modal.getInstance(document.getElementById('step1Modal'));
+            step1Modal.hide();
+
+            const step2Modal = new bootstrap.Modal(document.getElementById('step2Modal'));
+            step2Modal.show();
+        }
+        // If invalid, nothing happens except showing errors
+    });
+}
+
+// step 1 validation end
+
+
+//step 2 validation
+
+(function () {
+    const nextBtnStep2 = document.getElementById('nextStep2Btn');
+    if (!nextBtnStep2) return;
+
+    const requiredCheckboxes = [
+        { id: 'confirmPassport', msg: 'Please confirm you have a valid passport' },
+        { id: 'confirmPicture', msg: 'Please confirm you have a picture/headshot' },
+        { id: 'confirmNoOtherVisa', msg: 'Please confirm no active application' },
+        { id: 'confirmDecision', msg: 'Please acknowledge government discretion' }
+    ];
+
+    // Create error containers once
+    requiredCheckboxes.forEach(({ id }) => {
+        const cb = document.getElementById(id);
+        if (!cb) return;
+        const container = cb.closest('.form-check');
+        if (!container.querySelector('.step2-error')) {
+            const err = document.createElement('div');
+            err.className = 'step2-error text-danger small mt-1';
+            err.style.display = 'none';
+            container.appendChild(err);
+        }
+        cb.addEventListener('change', () => {
+            const err = container.querySelector('.step2-error');
+            if (cb.checked) err.style.display = 'none';
+        });
+    });
+
+    nextBtnStep2.addEventListener('click', () => {
+        let allChecked = true;
+
+        requiredCheckboxes.forEach(({ id, msg }) => {
+            const cb = document.getElementById(id);
+            const err = cb.closest('.form-check').querySelector('.step2-error');
+            if (!cb.checked) {
+                err.textContent = msg;
+                err.style.display = 'block';
+                allChecked = false;
+            } else {
+                err.style.display = 'none';
+            }
+        });
+
+        if (allChecked) {
+            const modal2 = bootstrap.Modal.getInstance(document.getElementById('step2Modal'));
+            modal2.hide();
+            new bootstrap.Modal(document.getElementById('step3Modal')).show();
+        }
+    });
+})();
+
+// step 2 validation end

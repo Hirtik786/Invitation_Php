@@ -1,8 +1,10 @@
 @php
     $countries = include base_path('vendor/umpirsky/country-list/data/en/country.php');
 @endphp
+<form method="POST" action="{{ route('visa.submit') }}" enctype="multipart/form-data">
+    @csrf
 
-<!-- Step 1 Modal -->
+    <!-- Step 1 Modal -->
     <div class="modal fade" id="step1Modal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -48,27 +50,24 @@
                             <div class="text-muted small">USD</div>
                         </div>
                     </div>
-
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">I am from</label>
-                            <select class="form-select" id="fromCountry1" name="from_country">
-                                <option value="">Select country</option>
-                                @foreach($countries as $code => $name)
-                                    <option value="{{ $code }}">{{ $code }} - {{ $name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">I live in</label>
-                            <select class="form-select" id="liveInCountry1" name="live_in_country">
-                                <option value="">Select country</option>
-                                @foreach($countries as $code => $name)
-                                    <option value="{{ $code }}">{{ $code }} - {{ $name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </form>
+                    <div class="mb-3">
+                        <label class="form-label">I am from</label>
+                        <select class="form-select" id="fromCountry1" name="from_country">
+                            <option value="">Select country</option>
+                            @foreach($countries as $code => $name)
+                                <option value="{{ $name }}">{{ $code }} - {{ $name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">I live in</label>
+                        <select class="form-select" id="liveInCountry1" name="live_in_country">
+                            <option value="">Select country</option>
+                            @foreach($countries as $code => $name)
+                                <option value="{{ $name }}">{{ $code }} - {{ $name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <!-- Footer -->
@@ -76,8 +75,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <div class="d-flex align-items-center gap-3">
                         <div class="text-muted small">Step 1 of 5</div>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#step2Modal"
-                            data-bs-dismiss="modal">Next</button>
+                        <button class="btn btn-primary details-btn" id="nextStep1Btn">Next</button>
                     </div>
                 </div>
             </div>
@@ -198,7 +196,7 @@
 
                     <div class="d-flex align-items-center gap-3">
                         <div class="text-muted small">Step 2 of 5</div>
-                        <button type="button" class="btn btn-primary" data-bs-target="#step3Modal" data-bs-toggle="modal"data-bs-dismiss="modal">Next</button>
+                        <button type="button" class="btn btn-primary details-btn" id="nextStep2Btn">Next</button>
                     </div>
                 </div>
 
@@ -240,7 +238,7 @@
                 </div>
 
                 <!-- Body -->
-                <div class="modal-body">
+                <div class="modal-body scrollable-modal-body">
                     <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap">
                         <div class="d-flex align-items-center gap-2 flex-wrap">
                             <span class="badge packcstm" id="selectedPackageName">Invitation + Visa
@@ -250,28 +248,76 @@
                         <span class="fw-bold fs-5 text-dark" id="selectedPackagePrice">Price: 599 USD</span>
                     </div>
 
-                    <h6 class="fw-semibold mb-2">Please Upload the Following Documents</h6>
-                    <p class="text-muted small mb-4">Accepted Formats: <strong>PDF, JPG, PNG</strong></p>
+                    <!-- Title and Accepted Formats -->
+                    <div class="text-center">
+                        <h5 class="fw-bold mb-3">Please Upload the Following Documents</h5>
+                        <p class="mb-4">
+                            Accepted Formats:
+                            <a href="#" class="text-primary fw-semibold">PDF</a>,
+                            <a href="#" class="text-primary fw-semibold">JPG</a>
+                            or
+                            <a href="#" class="text-primary fw-semibold">PNG</a>
+                        </p>
+                    </div>
 
+                    <!-- Document Icons and Labels -->
+                    <div class="row mb-4">
+                        <div class="col-6 text-center">
+                            <i class="bi bi-file-text fs-1 text-muted mb-2"></i>
+                            <div class="fw-semibold">1 Valid Passport</div>
+                        </div>
+                        <div class="col-6 text-center">
+                            <i class="bi bi-file-text fs-1 text-muted mb-2"></i>
+                            <div class="fw-semibold">2 Picture Headshot</div>
+                        </div>
+                    </div>
+
+
+                    <!-- Upload Boxes -->
                     <div class="row">
-                        <!-- Passport Upload -->
+                        <!-- Passport -->
                         <div class="col-md-6 mb-4">
-                            <label class="form-label fw-semibold">1 Valid Passport</label>
-                            <div class="upload-box" id="passportBox"
-                                onclick="document.getElementById('passportUpload').click()">
-                                <span class="text-muted" id="passportFileName">Click to upload or drag and drop</span>
-                                <input type="file" accept=".pdf,.jpg,.jpeg,.png" id="passportUpload" hidden>
+
+                            <div class="upload-area-custom  border-dashed rounded-3 p-4 text-center"
+                                data-upload="passport" onclick="document.getElementById('passportUpload').click()">
+                                <div class="upload-content">
+                                    <i class="bi bi-upload text-primary fs-1 mb-2"></i>
+                                    <div class="text-primary fw-semibold">Click to upload</div>
+                                    <div class="text-muted small">or drag and drop</div>
+                                </div>
+                                <div class="upload-preview" style="display: none;">
+                                    <i class="bi bi-file-earmark-check text-success fs-2 mb-2"></i>
+                                    <div class="text-success fw-semibold upload-filename"></div>
+                                    <div class="text-muted " style="font-size: 0.7rem">Click to change</div>
+                                </div>
                             </div>
+                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" id="passportUpload" class="document-upload"
+                                name="passport" hidden>
+                            <!-- Add error message container -->
+                            <div class="step3-error text-danger small text-center mt-2" style="display: none;"></div>
+
                         </div>
 
-                        <!-- Headshot Upload -->
+                        <!-- Headshot -->
                         <div class="col-md-6 mb-4">
-                            <label class="form-label fw-semibold">2 Picture Headshot</label>
-                            <div class="upload-box" id="headshotBox"
-                                onclick="document.getElementById('headshotUpload').click()">
-                                <span class="text-muted" id="headshotFileName">Click to upload or drag and drop</span>
-                                <input type="file" accept=".jpg,.jpeg,.png" id="headshotUpload" hidden>
+
+                            <div class="upload-area-custom  border-dashed rounded-3 p-4 text-center"
+                                data-upload="headshot" onclick="document.getElementById('headshotUpload').click()">
+                                <div class="upload-content">
+                                    <i class="bi bi-upload text-primary fs-1 mb-2"></i>
+                                    <div class="text-primary fw-semibold">Click to upload</div>
+                                    <div class="text-muted small">or drag and drop</div>
+                                </div>
+                                <div class="upload-preview" style="display: none;">
+                                    <i class="bi bi-file-earmark-check text-success fs-2 mb-2"></i>
+                                    <div class="text-success fw-semibold upload-filename"></div>
+                                    <div class="text-muted" style="font-size: 0.7rem;">Click to change</div>
+                                </div>
                             </div>
+                            <input type="file" accept=".pdf,.jpg,.jpeg,.png" id="headshotUpload" class="document-upload"
+                                name="headshot" hidden>
+                            <!-- Add error message container -->
+                            <div class="step3-error text-danger small text-center mt-2" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -282,8 +328,7 @@
                         data-bs-dismiss="modal">Back</button>
                     <div class="d-flex align-items-center gap-3">
                         <div class="text-muted small">Step 3 of 5</div>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#step4Modal"
-                            data-bs-dismiss="modal">Details</button>
+                        <button class="btn btn-primary details-btn" id="nextStep3Btn">Details→</button>
                     </div>
                 </div>
             </div>
@@ -337,50 +382,60 @@
                         <div class="col-md-6">
                             <label class="form-label">First Name</label>
                             <input type="text" class="form-control" id="firstName" name="first_name">
+                            <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Last Name</label>
                             <input type="text" class="form-control" id="lastName" name="last_name">
+                            <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Phone Number</label>
                             <input type="text" class="form-control" id="phoneNumber" name="phone_number">
+                            <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Email Address</label>
                             <input type="email" class="form-control" id="emailAddress" name="email">
+                            <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">From (Country)</label>
-                            <input type="text" class="form-control" id="fromCountry" name="from_country">
+                            <input type="text" class="form-control" id="fromCountry" name="from_country" readonly>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Live in</label>
-                            <input type="text" class="form-control" id="liveInCountry" name="live_in_country">
+                            <input type="text" class="form-control" id="liveInCountry" name="live_in_country" readonly>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Passport Number</label>
                             <input type="text" class="form-control" id="passportNumber" name="passport_number">
+                            <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Date Of Birth</label>
                             <input type="date" class="form-control" id="DOB" name="dob">
+                            <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Profession</label>
                             <input type="text" class="form-control" id="profession" name="profession">
+                            <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Travel Date From</label>
                             <input type="date" class="form-control" id="travelDateFrom" name="travel_date_from">
+                            <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Travel Date To</label>
                             <input type="date" class="form-control" id="travelDateTo" name="travel_date_to">
+                            <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Travel Purpose</label>
                             <input type="text" class="form-control" id="travelPurpose" name="travel_purpose">
+                            <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Number of Travellers</label>
@@ -389,10 +444,6 @@
                         </div>
 
                         <div id="additionalTravelersSection" class="mt-4"></div>
-
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
                     </div>
 
                 </div>
@@ -402,8 +453,7 @@
                         data-bs-dismiss="modal">Back</button>
                     <div class="d-flex align-items-center gap-3">
                         <div class="text-muted small">Step 4 of 5</div>
-                        <button class="btn btn-primary" id="step4NextBtn" data-bs-target="#step5Modal"
-                            data-bs-toggle="modal" data-bs-dismiss="modal">Review</button>
+                        <button class="btn btn-primary details-btn" id="step4NextBtn" >Review</button>
                     </div>
                 </div>
             </div>
@@ -527,3 +577,5 @@
             </div>
         </div>
     </div>
+
+</form>
