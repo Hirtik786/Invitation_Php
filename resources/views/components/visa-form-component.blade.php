@@ -1,8 +1,7 @@
 @php
     $countries = include base_path('vendor/umpirsky/country-list/data/en/country.php');
 @endphp
-<form method="POST" action="{{ route('visa.submit') }}" enctype="multipart/form-data">
-    @csrf
+
 
     <!-- Step 1 Modal -->
     <div class="modal fade" id="step1Modal" tabindex="-1" aria-hidden="true">
@@ -571,11 +570,10 @@
                         data-bs-dismiss="modal">Back</button>
                     <div class="d-flex align-items-center gap-3">
                         <div class="text-muted small">Step 5 of 5</div>
-                        <button id="submitButton" class="btn btn-primary">Submit</button>
+                        <button id="submitButton" class="btn btn-primary details-btn">Submit</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-</form>

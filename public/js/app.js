@@ -497,25 +497,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Add event listener to dynamically created final submit button
-            const finalSubmitBtn = document.getElementById('finalSubmitBtn');
-            if (finalSubmitBtn) {
-                finalSubmitBtn.addEventListener('click', () => {
-                    resetFormAndState();
+            // const finalSubmitBtn = document.getElementById('finalSubmitBtn');
+            // if (finalSubmitBtn) {
+            //     finalSubmitBtn.addEventListener('click', () => {
+            //         resetFormAndState();
 
-                    // Close any open modals
-                    document.querySelectorAll('.modal.show').forEach(modalEl => {
-                        const modalInstance = bootstrap.Modal.getInstance(modalEl);
-                        if (modalInstance) modalInstance.hide();
-                    });
-                    document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+            //         // Close any open modals
+            //         document.querySelectorAll('.modal.show').forEach(modalEl => {
+            //             const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            //             if (modalInstance) modalInstance.hide();
+            //         });
+            //         document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
 
-                    // Show success message
-                    successMessage.classList.add('show');
-                    setTimeout(() => successMessage.classList.remove('show'), 3000);
+            //         // Show success message
+            //         successMessage.classList.add('show');
+            //         setTimeout(() => successMessage.classList.remove('show'), 3000);
 
-                    console.log("Form reset and back to country selection.");
-                });
-            }
+            //         console.log("Form reset and back to country selection.");
+            //     });
+            // }
 
             // Close modals triggered by submit (if any)
             document.querySelectorAll('.modal.show').forEach(modalEl => {
@@ -667,22 +667,22 @@ document.querySelectorAll('.details-btn').forEach(btn => {
         console.log('Details button clicked');
     });
 });
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('submitBtn').addEventListener('click', function (e) {
-        console.log("done");
-        e.preventDefault();
+// document.addEventListener('DOMContentLoaded', function () {
+//     document.getElementById('submitBtn').addEventListener('click', function (e) {
+//         console.log("done");
+//         e.preventDefault();
 
-        // Optional: client-side check before submit
-        const checkbox = document.querySelector('input[name="confirm_decision"]');
-        if (!checkbox.checked) {
-            alert('You must confirm your decision before submitting.');
-            return;
-        }
+//         // Optional: client-side check before submit
+//         const checkbox = document.querySelector('input[name="confirm_decision"]');
+//         if (!checkbox.checked) {
+//             alert('You must confirm your decision before submitting.');
+//             return;
+//         }
 
-        // Now submit the form manually
-        document.getElementById('visaForm').submit();
-    });
-});
+//         // Now submit the form manually
+//         document.getElementById('visaForm').submit();
+//     });
+// });
 document.getElementById('submitBtn').addEventListener('click', function () {
     const form = document.getElementById('visaForm');
     const formData = new FormData(form);

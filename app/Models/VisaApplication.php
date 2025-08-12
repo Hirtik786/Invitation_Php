@@ -10,10 +10,6 @@ class VisaApplication extends Model
     protected $fillable = [
         'from_country',
         'live_in_country',
-        'confirm_passport',
-        'confirm_picture',
-        'confirm_no_other_visa',
-        'confirm_decision',
         'first_name',
         'last_name',
         'phone_number',
