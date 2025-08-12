@@ -237,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    // ===== DYNAMIC TRAVELER FIELDS =====
+    // ===== Additional TRAVELER FIELDS =====
     if (numberInput && additionalSection) {
         numberInput.addEventListener("input", () => {
             const num = parseInt(numberInput.value) || 1;
@@ -277,12 +277,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <input type="date" class="form-control" name="traveler_${i}_dob" placeholder="Date Of Birth">
                             </div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
                 additionalSection.appendChild(card);
             }
         });
     }
+
 
 
     // ===== STEP 4 VALIDATION =====
@@ -364,6 +364,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 allValid = false;
             }
 
+            // Validate additonal travelers
+            const numTravelers = parseInt(document.getElementById("numTravellers").value) || 1;
+            for (let i = 2; i <= numTravelers; i++) {
+                const dynamicFields = [
+                    { name: `traveler_${i}_name`, msg: `Traveler ${i} name is required` },
+                    { name: `traveler_${i}_relation`, msg: `Traveler ${i} relation is required` },
+                    { name: `traveler_${i}_passport`, msg: `Traveler ${i} passport is required` },
+                    { name: `traveler_${i}_dob`, msg: `Traveler ${i} date of birth is required` }
+                ];
+
+                dynamicFields.forEach(({ name, msg }) => {
+                    const input = document.querySelector(`[name="${name}"]`);
+                    if (input) {
+                        let errorDiv = input.parentElement.parentElement.querySelector(".step4-error");
+                        if (!errorDiv) {
+                            errorDiv = document.createElement("div");
+                            errorDiv.className = "step4-error text-danger small mt-1";
+                            errorDiv.style.display = "none";
+                            input.parentElement.parentElement.appendChild(errorDiv);
+                        }
+
+                        if (!input.value.trim()) {
+                            errorDiv.textContent = msg;
+                            errorDiv.style.display = "block";
+                            input.classList.add("is-invalid");
+                            allValid = false;
+                        } else {
+                            errorDiv.textContent = "";
+                            errorDiv.style.display = "none";
+                            input.classList.remove("is-invalid");
+                        }
+                    }
+                });
+            }
+
+
             // Proceed if valid
             if (allValid) {
                 const step4Modal = bootstrap.Modal.getInstance(document.getElementById('step4Modal'));
@@ -378,7 +414,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return emailRegex.test(email);
         }
     })();
-
 
     // ===== STEP 5 - REVIEW MODALS =====
     document.getElementById('step3Modal')?.addEventListener('show.bs.modal', function () {
