@@ -335,7 +335,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const errorDiv = input.nextElementSibling;
 
                 if (!input.value.trim()) {
-                    errorDiv.textContent = msg;
+                    input.style.border = "1px solid red";
+                    // input.style.backgroundColor = "#fef2f2"; // light red for visibility
+                    // errorDiv.textContent = msg;
                     errorDiv.style.display = 'block';
                     input.classList.add('is-invalid');
                     allValid = false;
