@@ -457,22 +457,22 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="firstName" name="first_name">
+                        <input type="text" class="form-control" id="firstName" name="first_name" placeholder="First Name">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="lastName" name="last_name">
+                        <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Last Name">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Phone Number</label>
-                        <input type="text" class="form-control" id="phoneNumber" name="phone_number">
+                        <input type="text" class="form-control" id="phoneNumber" name="phone_number" placeholder="Phone Number">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="emailAddress" name="email">
+                        <input type="email" class="form-control" id="emailAddress" name="email" placeholder="Email Address">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">
@@ -485,7 +485,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Passport Number</label>
-                        <input type="text" class="form-control" id="passportNumber" name="passport_number">
+                        <input type="text" class="form-control" id="passportNumber" name="passport_number" placeholder="Passport Number">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">
@@ -495,7 +495,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Profession</label>
-                        <input type="text" class="form-control" id="profession" name="profession">
+                        <input type="text" class="form-control" id="profession" name="profession" placeholder="Profession">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">
@@ -510,7 +510,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Travel Purpose</label>
-                        <input type="text" class="form-control" id="travelPurpose" name="travel_purpose">
+                        <input type="text" class="form-control" id="travelPurpose" name="travel_purpose" placeholder="Travel Purpose">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">

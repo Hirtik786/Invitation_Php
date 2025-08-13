@@ -139,8 +139,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 uploadPreview.style.display = 'block';
                 uploadFilename.textContent = file.name;
 
-                // Hide error message
+                // Hide error message and remove error class
                 if (errorDiv) errorDiv.style.display = 'none';
+                uploadArea.classList.remove('error'); // ✅ REMOVE error state
 
                 // console.log(Uploaded ${ this.name }:, file.name);
             } else {
@@ -198,7 +199,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!inputEl.files || !inputEl.files[0]) {
                     errorDiv.textContent = msg;
                     errorDiv.style.display = 'block';
+                    const uploadArea = colContainer.querySelector('.upload-area-custom');
+                    if (uploadArea) uploadArea.classList.add('error'); // ✅ ADD error class
                     allUploaded = false;
+                } else {
+                    // Clean up in case it was previously marked as error
+                    const uploadArea = colContainer.querySelector('.upload-area-custom');
+                    if (uploadArea) uploadArea.classList.remove('error'); // ✅ Ensure error is cleared
                 }
             });
 
@@ -311,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const errorDiv = this.nextElementSibling;
                     if (errorDiv && errorDiv.classList.contains('step4-error') && this.value.trim()) {
                         errorDiv.style.display = 'none';
-                        this.classList.remove('is-invalid');
+                        this.classList.remove('error');
                     }
                 });
             }
@@ -326,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 err.style.display = 'none';
             });
             document.querySelectorAll('#step4Modal .form-control').forEach(input => {
-                input.classList.remove('is-invalid');
+                input.classList.remove('error');
             });
 
             // Validate each field
@@ -339,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // input.style.backgroundColor = "#fef2f2"; // light red for visibility
                     errorDiv.textContent = msg;
                     errorDiv.style.display = 'block';
-                    input.classList.add('is-invalid');
+                    input.classList.add('error');
                     allValid = false;
                 }
             });
@@ -355,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (enteredDOB >= today) {
                     dobError.textContent = 'Date of Birth must be before today';
                     dobError.style.display = 'block';
-                    dobInput.classList.add('is-invalid');
+                    dobInput.classList.add('error');
                     allValid = false;
                 }
             }
@@ -366,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (emailInput.value.trim() && !isValidEmail(emailInput.value)) {
                 emailError.textContent = 'Please enter a valid email address';
                 emailError.style.display = 'block';
-                emailInput.classList.add('is-invalid');
+                emailInput.classList.add('error');
                 allValid = false;
             }
 
@@ -384,14 +391,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (startDate.value && new Date(startDate.value) <= today) {
                 startDateError.textContent = 'Travel start date must be after today';
                 startDateError.style.display = 'block';
-                startDate.classList.add('is-invalid');
+                startDate.classList.add('error');
                 allValid = false;
             }
 
             if (startDate.value && endDate.value && new Date(endDate.value) <= new Date(startDate.value)) {
                 endDateError.textContent = 'Return date must be after departure date';
                 endDateError.style.display = 'block';
-                endDate.classList.add('is-invalid');
+                endDate.classList.add('error');
                 allValid = false;
             }
 
@@ -419,7 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (!input.value.trim()) {
                             errorDiv.textContent = msg;
                             errorDiv.style.display = "block";
-                            input.classList.add("is-invalid");
+                            input.classList.add("error");
                             allValid = false;
                         }
                         else {
@@ -432,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 if (enteredDOB >= today) {
                                     errorDiv.textContent = `Traveler ${i} Date of Birth must be before today`;
                                     errorDiv.style.display = "block";
-                                    input.classList.add("is-invalid");
+                                    input.classList.add("error");
                                     allValid = false;
                                     return; // Skip removing error class
                                 }
@@ -440,7 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             errorDiv.textContent = "";
                             errorDiv.style.display = "none";
-                            input.classList.remove("is-invalid");
+                            input.classList.remove("error");
                         }
                     }
                 });
@@ -867,4 +874,3 @@ if (nextBtnStep1) {
 })();
 
 // step 2 validation end
-
