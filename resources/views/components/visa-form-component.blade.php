@@ -97,20 +97,37 @@
                 </div>
 
                 <div class="step-indicator w-100">
-                    <div class="step inactive">
-                        <div class="step-number">1</div> Location
+                    <div class="step completed">
+                        <div
+                            class="step-number w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-white text-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4">
+                                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                <path d="m9 11 3 3L22 4"></path>
+                            </svg>
+                        </div>
+                        Location
                     </div>
+
                     <div class="step active">
-                        <div class="step-number">2</div> Requirements
+                        <div class="step-number">2</div>
+                        Requirements
                     </div>
+
                     <div class="step inactive">
-                        <div class="step-number">3</div> Documents
+                        <div class="step-number">3</div>
+                        Documents
                     </div>
+
                     <div class="step inactive">
-                        <div class="step-number">4</div> Personal
+                        <div class="step-number">4</div>
+                        Personal
                     </div>
+
                     <div class="step inactive">
-                        <div class="step-number">5</div> Review
+                        <div class="step-number">5</div>
+                        Review
                     </div>
                 </div>
             </div>
@@ -220,20 +237,45 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="step-indicator w-100">
-                    <div class="step inactive">
-                        <div class="step-number">1</div> Location
+                    <div class="step completed">
+                        <div
+                            class="step-number w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-white text-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4">
+                                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                <path d="m9 11 3 3L22 4"></path>
+                            </svg>
+                        </div>
+                        Location
                     </div>
-                    <div class="step inactive">
-                        <div class="step-number">2</div> Requirements
+
+                    <div class="step completed">
+                        <div
+                            class="step-number w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-white text-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4">
+                                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                <path d="m9 11 3 3L22 4"></path>
+                            </svg>
+                        </div>
+                        Requirements
                     </div>
+
                     <div class="step active">
-                        <div class="step-number">3</div> Documents
+                        <div class="step-number">3</div>
+                        Documents
                     </div>
+
                     <div class="step inactive">
-                        <div class="step-number">4</div> Personal
+                        <div class="step-number">4</div>
+                        Personal
                     </div>
+
                     <div class="step inactive">
-                        <div class="step-number">5</div> Review
+                        <div class="step-number">5</div>
+                        Review
                     </div>
                 </div>
             </div>
@@ -349,20 +391,53 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="step-indicator w-100">
-                    <div class="step inactive">
-                        <div class="step-number">1</div> Location
+                    <div class="step completed">
+                        <div
+                            class="step-number w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-white text-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4">
+                                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                <path d="m9 11 3 3L22 4"></path>
+                            </svg>
+                        </div>
+                        Location
                     </div>
-                    <div class="step inactive">
-                        <div class="step-number">2</div> Requirements
+
+                    <div class="step completed">
+                        <div
+                            class="step-number w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-white text-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4">
+                                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                <path d="m9 11 3 3L22 4"></path>
+                            </svg>
+                        </div>
+                        Requirements
                     </div>
-                    <div class="step inactive">
-                        <div class="step-number">3</div> Documents
+
+                    <div class="step completed">
+                        <div
+                            class="step-number w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-white text-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4">
+                                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                <path d="m9 11 3 3L22 4"></path>
+                            </svg>
+                        </div>
+                        Documents
                     </div>
+
                     <div class="step active">
-                        <div class="step-number">4</div> Personal
+                        <div class="step-number">4</div>
+                        Personal
                     </div>
+
                     <div class="step inactive">
-                        <div class="step-number">5</div> Review
+                        <div class="step-number">5</div>
+                        Review
                     </div>
                 </div>
             </div>
@@ -474,20 +549,61 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="step-indicator w-100">
-                    <div class="step inactive">
-                        <div class="step-number">1</div> Location
+                    <div class="step completed">
+                        <div
+                            class="step-number w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-white text-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4">
+                                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                <path d="m9 11 3 3L22 4"></path>
+                            </svg>
+                        </div>
+                        Location
                     </div>
-                    <div class="step inactive">
-                        <div class="step-number">2</div> Requirements
+
+                    <div class="step completed">
+                        <div
+                            class="step-number w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-white text-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4">
+                                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                <path d="m9 11 3 3L22 4"></path>
+                            </svg>
+                        </div>
+                        Requirements
                     </div>
-                    <div class="step inactive">
-                        <div class="step-number">3</div> Documents
+
+                    <div class="step completed">
+                        <div
+                            class="step-number w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-white text-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4">
+                                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                <path d="m9 11 3 3L22 4"></path>
+                            </svg>
+                        </div>
+                        Documents
                     </div>
-                    <div class="step inactive">
-                        <div class="step-number">4</div> Personal
+
+                    <div class="step completed">
+                        <div
+                            class="step-number w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold bg-white text-sky-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-circle-check-big w-4 h-4">
+                                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                                <path d="m9 11 3 3L22 4"></path>
+                            </svg>
+                        </div>
+                        Personal
                     </div>
+
                     <div class="step active">
-                        <div class="step-number">5</div> Review
+                        <div class="step-number">5</div>
+                        Review
                     </div>
                 </div>
             </div>

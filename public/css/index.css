@@ -589,6 +589,19 @@ nav {
     background: rgba(255, 255, 255, 0.3);
 }
 
+.step.completed .step-number svg {
+    stroke: #0ea5e9; /* Sky blue stroke */
+    width: 16px;
+    height: 16px;
+}
+
+
+/* Optional: make sure the SVG checkmark is white */
+.step.completed .step-number {
+    background: white;
+    color: #0ea5e9; /* Sky-600 */
+}
+
 /* =====================
    UTILITIES
 ===================== */
