@@ -335,14 +335,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 const errorDiv = input.nextElementSibling;
 
                 if (!input.value.trim()) {
-                    input.style.border = "1px solid red";
+                    // input.style.border = "1px solid red";
                     // input.style.backgroundColor = "#fef2f2"; // light red for visibility
-                    // errorDiv.textContent = msg;
+                    errorDiv.textContent = msg;
                     errorDiv.style.display = 'block';
                     input.classList.add('is-invalid');
                     allValid = false;
                 }
             });
+            // DOB validation (must be before today)
+            const dobInput = document.querySelector(`input[name="dob"]`);
+            const dobError = dobInput.nextElementSibling;
+
+            if (dobInput.value) {
+                const enteredDOB = new Date(dobInput.value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                if (enteredDOB >= today) {
+                    dobError.textContent = 'Date of Birth must be before today';
+                    dobError.style.display = 'block';
+                    dobInput.classList.add('is-invalid');
+                    allValid = false;
+                }
+            }
 
             // Email validation
             const emailInput = document.querySelector(`input[name="email"]`);
@@ -357,7 +373,20 @@ document.addEventListener('DOMContentLoaded', () => {
             // Date validation
             const startDate = document.querySelector(`input[name="travel_date_from"]`);
             const endDate = document.querySelector('input[name="travel_date_to"]');
+            const startDateError = startDate.nextElementSibling;
             const endDateError = endDate.nextElementSibling;
+
+            // Today's date (without time)
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Check if "Travel Date From" is in the past or today
+            if (startDate.value && new Date(startDate.value) <= today) {
+                startDateError.textContent = 'Travel start date must be after today';
+                startDateError.style.display = 'block';
+                startDate.classList.add('is-invalid');
+                allValid = false;
+            }
 
             if (startDate.value && endDate.value && new Date(endDate.value) <= new Date(startDate.value)) {
                 endDateError.textContent = 'Return date must be after departure date';
@@ -366,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 allValid = false;
             }
 
-            // Validate additonal travelers
+            // Validate additional travelers
             const numTravelers = parseInt(document.getElementById("numTravellers").value) || 1;
             for (let i = 2; i <= numTravelers; i++) {
                 const dynamicFields = [
@@ -392,7 +421,23 @@ document.addEventListener('DOMContentLoaded', () => {
                             errorDiv.style.display = "block";
                             input.classList.add("is-invalid");
                             allValid = false;
-                        } else {
+                        }
+                        else {
+                            // Extra DOB validation for additional travelers
+                            if (name.includes("_dob")) {
+                                const enteredDOB = new Date(input.value);
+                                const today = new Date();
+                                today.setHours(0, 0, 0, 0);
+
+                                if (enteredDOB >= today) {
+                                    errorDiv.textContent = `Traveler ${i} Date of Birth must be before today`;
+                                    errorDiv.style.display = "block";
+                                    input.classList.add("is-invalid");
+                                    allValid = false;
+                                    return; // Skip removing error class
+                                }
+                            }
+
                             errorDiv.textContent = "";
                             errorDiv.style.display = "none";
                             input.classList.remove("is-invalid");
@@ -400,7 +445,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             }
-
 
             // Proceed if valid
             if (allValid) {

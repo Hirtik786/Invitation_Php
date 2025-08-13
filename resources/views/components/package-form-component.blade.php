@@ -33,7 +33,7 @@
                     <span>Invitation processing time is 48 hours</span>
                 </div>
 
-                <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal"
+                <button class="btn btn-custom open-modal details-btn" data-bs-toggle="modal" data-bs-target="#step1Modal"
                     data-bs-dismiss="modal" data-package-name="Invitation + Visa Documentation"
                     data-package-price="499">
                     Get Started <span>→</span>
@@ -72,7 +72,7 @@
                     <span>Invitation processing time is 48 hours</span>
                 </div>
 
-                <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal"
+                <button class="btn btn-custom open-modal details-btn" data-bs-toggle="modal" data-bs-target="#step1Modal"
                     data-bs-dismiss="modal" data-package-name="Invitation" data-package-price="475">
                     Get Started <span>→</span>
                 </button>
@@ -110,7 +110,7 @@
                     <span>Invitation processing time is 48 hours</span>
                 </div>
 
-                <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal"
+                <button class="btn btn-custom open-modal details-btn" data-bs-toggle="modal" data-bs-target="#step1Modal"
                     data-bs-dismiss="modal" data-package-name="Visa Documentation" data-package-price="75">
                     Get Started <span>→</span>
                 </button>
