@@ -82,135 +82,128 @@
 </div>
 
 <!-- Step 2 Modal -->
-    <div class="modal fade" id="step2Modal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
+<div class="modal fade" id="step2Modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
 
-                <!-- Header -->
-                <div class="modal-header flex-column align-items-start">
-                    <div class="w-100 d-flex justify-content-between">
-                        <div>
-                            <h5 class="modal-title">Application Details</h5>
-                            <div class="modal-subtitle">Requirements & Confirmation - Step 2 of 5</div>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            <!-- Header -->
+            <div class="modal-header flex-column align-items-start">
+                <div class="w-100 d-flex justify-content-between">
+                    <div>
+                        <h5 class="modal-title">Application Details</h5>
+                        <div class="modal-subtitle">Requirements & Confirmation - Step 2 of 5</div>
                     </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
 
-                    <div class="step-indicator w-100">
-                        <div class="step completed">
-                            <div class="step-number">
-                                <!-- White checkmark inside -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
-                                    viewBox="0 0 16 16">
+                <div class="step-indicator w-100">
+                    <div class="step inactive">
+                        <div class="step-number">1</div> Location
+                    </div>
+                    <div class="step active">
+                        <div class="step-number">2</div> Requirements
+                    </div>
+                    <div class="step inactive">
+                        <div class="step-number">3</div> Documents
+                    </div>
+                    <div class="step inactive">
+                        <div class="step-number">4</div> Personal
+                    </div>
+                    <div class="step inactive">
+                        <div class="step-number">5</div> Review
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body scrollable-modal-body">
+
+                <div class="text-center mb-4">
+                    <h5 class="fw-semibold">Let's get your Visa(s)</h5>
+                    <p class="text-muted">What's required to make this application?</p>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="requirement-box">
+                            <div class="mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 0 24 24" width="32"
+                                    fill="#0ea5e9">
+                                    <path d="M0 0h24v24H0z" fill="none" />
                                     <path
-                                        d="M13.485 1.929a1 1 0 0 1 1.415 1.415l-8 8a1 1 0 0 1-1.415 0l-4-4a1 1 0 0 1 1.415-1.415L6 8.586l7.485-7.485z" />
+                                        d="M12 2c-4.97 0-9 4.03-9 9 0 5.25 7 13 7 13s7-7.75 7-13c0-4.97-4.03-9-9-9zm0 12c-1.66 0-3-1.34-3-3S10.34 8 12 8s3 1.34 3 3-1.34 3-3 3z" />
                                 </svg>
                             </div>
-                            Location
+                            <h6 class="fw-bold">1 Valid Passport</h6>
+                            <p class="text-muted small">Clear passport scan or picture with minimum of 6 months
+                                validity.</p>
                         </div>
-
-                        <div class="step active">
-                            <div class="step-number">2</div>
-                            Requirements
-                        </div>
-
-                        <div class="step inactive">
-                            <div class="step-number">3</div>
-                            Documents
-                        </div>
-
-                        <div class="step inactive">
-                            <div class="step-number">4</div>
-                            Personal
-                        </div>
-
-                        <div class="step inactive">
-                            <div class="step-number">5</div>
-                            Review
-                        </div>
-
                     </div>
-                </div>
-
-                <!-- Body -->
-                <div class="modal-body scrollable-modal-body">
-
-                    <div class="text-center mb-4">
-                        <h5 class="fw-semibold">Let's get your Visa(s)</h5>
-                        <p class="text-muted">What's required to make this application?</p>
-                    </div>
-
-                    <div class="row mb-4">
-                        <div class="col-md-6 mb-3">
-                            <div class="requirement-box text-center">
-                                <i class="bi bi-file-text fs-1 text-muted mb-2"></i>
-                                <h6 class="fw-bold">1 Valid Passport</h6>
-                                <div class="blue-line"></div>
-                                <p class="text-muted small">
-                                    Clear passport scan or picture with minimum of 6 months validity.
-                                </p>
+                    <div class="col-md-6 mb-3">
+                        <div class="requirement-box">
+                            <div class="mb-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="32" viewBox="0 0 24 24" width="32"
+                                    fill="#0ea5e9">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4s-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                                </svg>
                             </div>
+                            <h6 class="fw-bold">2 Picture / Headshot</h6>
+                            <p class="text-muted small">Clear passport scan or picture with minimum of 6 months
+                                validity.</p>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <div class="requirement-box text-center">
-                                <i class="bi bi-file-text fs-1 text-muted mb-2"></i>
-                                <h6 class="fw-bold">2 Picture / Headshot</h6>
-                                <div class="blue-line"></div>
-                                <p class="text-muted small">
-                                    Clear passport scan or picture with minimum of 6 months validity.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="mb-4 checklist-box">
-                        <p class="fw-semibold">Please confirm that you have read and agreed to the following:</p>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="confirmPassport">
-                            <label class="form-check-label" for="confirmPassport">
-                                I have a valid passport with minimum 6 months validity
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="confirmPicture">
-                            <label class="form-check-label" for="confirmPicture">
-                                I have a clear picture/headshot available for the application
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" id="confirmNoOtherVisa">
-                            <label class="form-check-label" for="confirmNoOtherVisa">
-                                I hereby confirm that no active visa application is currently under processing by
-                                another agent. This could lead to a non-refundable rejection of my visa application.
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="confirmDecision">
-                            <label class="form-check-label" for="confirmDecision">
-                                The decision to grant or refuse the visa(s) is the sole prerogative and at the sole
-                                discretion of Government of Destination Country.
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Footer -->
-                <div class="modal-footer justify-content-between bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-target="#step1Modal" data-bs-toggle="modal"
-                        data-bs-dismiss="modal">Back</button>
-
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="text-muted small">Step 2 of 5</div>
-                        <button type="button" class="btn btn-primary details-btn" id="nextStep2Btn">Next</button>
                     </div>
                 </div>
 
+                <div class="mb-4">
+                    <p class="fw-semibold">Please confirm that you have read and agreed to the following:</p>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="confirmPassport">
+                        <label class="form-check-label" for="confirmPassport">
+                            I have a valid passport with minimum 6 months validity
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="confirmPicture">
+                        <label class="form-check-label" for="confirmPicture">
+                            I have a clear picture/headshot available for the application
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="confirmNoOtherVisa">
+                        <label class="form-check-label" for="confirmNoOtherVisa">
+                            I hereby confirm that no active visa application is currently under processing by
+                            another agent. This could lead to a non-refundable rejection of my visa application.
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="confirmDecision">
+                        <label class="form-check-label" for="confirmDecision">
+                            The decision to grant or refuse the visa(s) is the sole prerogative and at the sole
+                            discretion of Government of Destination Country.
+                        </label>
+                    </div>
+                </div>
 
             </div>
+
+            <!-- Footer -->
+            <div class="modal-footer justify-content-between bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-target="#step1Modal" data-bs-toggle="modal"
+                    data-bs-dismiss="modal">Back</button>
+
+                <div class="d-flex align-items-center gap-3">
+                    <div class="text-muted small">Step 2 of 5</div>
+                    <button type="button" class="btn btn-primary details-btn" id="nextStep2Btn">Next</button>
+                </div>
+            </div>
+
+
         </div>
     </div>
+</div>
+
 
 <!-- Step 3 Modal -->
 <div class="modal fade" id="step3Modal" tabindex="-1" aria-hidden="true">
