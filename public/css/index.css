@@ -660,3 +660,23 @@ input.form-control:focus {
         font-size: 1.5rem;
     }
 }
+
+
+
+.add-package-btn {
+    background-color: #0284c7;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+}
+
+.add-package-btn:hover {
+    background: #005078;
+    color: white;
+    transform: translateY(-1px);
+}

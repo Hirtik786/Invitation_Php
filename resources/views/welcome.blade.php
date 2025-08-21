@@ -28,8 +28,8 @@
                     <div class="success-message" id="successMessage">
                         🎉 Invitation submitted successfully! Your booking has been processed.
                     </div>
-                    <form method="POST" action="{{ route('visa.submit') }}" enctype="multipart/form-data">
-                        @csrf
+                    <!-- <form method="POST" action="{{ route('visa.submit') }}" enctype="multipart/form-data">
+                        @csrf -->
                         {{-- Country Component --}}
                         <x-country-form-component />
 
@@ -38,7 +38,7 @@
 
                         {{-- Traveler Component --}}
                         <x-traveler-form-component />
-                    </form>
+                    <!-- </form> -->
                 </div>
             </div>
         </div>

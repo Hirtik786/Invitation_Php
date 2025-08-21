@@ -874,3 +874,101 @@ if (nextBtnStep1) {
 })();
 
 // step 2 validation end
+
+function addPackage() {
+    // Get form values
+    const title = document.getElementById('packageTitle').value;
+    const country = document.getElementById('packageCountry').value;
+    const price = document.getElementById('packagePrice').value;
+    const originalPrice = document.getElementById('originalPrice').value;
+    const flag = document.getElementById('countryFlag').value;
+    const features = document.getElementById('packageFeatures').value;
+    const processingTime = document.getElementById('processingTime').value;
+    const slug = document.getElementById('packageSlug').value;
+
+    // Validate form
+    if (!title || !country || !price || !originalPrice || !flag || !features || !processingTime || !slug) {
+        alert('Please fill all fields');
+        return;
+    }
+
+    // Calculate savings
+    const savings = originalPrice - price;
+
+    // Create features array
+    const featuresArray = features.split('\n').filter(f => f.trim());
+
+    // Generate features HTML
+    let featuresHTML = '';
+    featuresArray.forEach(feature => {
+        featuresHTML += `<li><span class="feature-icon">✓</span> ${feature.trim()}</li>`;
+    });
+
+    // Create new package HTML
+    const packageHTML = `
+            <div class="col-12 col-lg-4">
+                <div class="package-card h-100" data-package="${slug}">
+                    <div class="package-header mb-3">
+                        <div class="package-title">${title}</div>
+                        <div class="d-flex flex-wrap mt-2">
+                            <span class="badge badge-flag">${flag}</span>
+                            <span class="badge badge-package">Package For ${country}</span>
+                        </div>
+                    </div>
+
+                    <div class="package-pricing mb-3">
+                        <div class="price-main">$${price} USD</div>
+                        <div class="d-flex align-items-center gap-2 mt-1">
+                            <span class="price-original">$${originalPrice} USD</span>
+                            <span class="price-savings">Save $${savings}</span>
+                        </div>
+                    </div>
+
+                    <ul class="package-features">
+                        ${featuresHTML}
+                    </ul>
+
+                    <div class="processing-time">
+                        <span>⏱</span>
+                        <span>${processingTime}</span>
+                    </div>
+
+                    <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal"
+                        data-bs-dismiss="modal" data-package-name="${title}"
+                        data-package-price="${price}">
+                        Get Started <span>→</span>
+                    </button>
+                </div>
+            </div>
+        `;
+
+    // Add to packages container (before the x-visa-form-component)
+    const visaFormComponent = document.querySelector('x-visa-form-component');
+    if (visaFormComponent) {
+        visaFormComponent.insertAdjacentHTML('beforebegin', packageHTML);
+    } else {
+        document.getElementById('packages-container').insertAdjacentHTML('beforeend', packageHTML);
+    }
+
+    // Reset form
+    document.getElementById('packageForm').reset();
+
+    // Close modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addPackageModal'));
+    modal.hide();
+
+    // Show success message
+    alert('Package added successfully!');
+}
+
+// Handle package selection for step1Modal
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('.btn-custom') || e.target.closest('.btn-custom')) {
+        const button = e.target.classList.contains('.btn-custom') ? e.target : e.target.closest('.btn-custom');
+        const packageName = button.getAttribute('data-package-name');
+        const packagePrice = button.getAttribute('data-package-price');
+
+        document.getElementById('selectedPackageName').textContent = packageName;
+        document.getElementById('selectedPackagePrice').textContent = packagePrice;
+    }
+});
