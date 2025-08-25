@@ -13,3 +13,4 @@ Route::post('/visa-submit', [VisaApplicationController::class, 'store'])->name('
 use App\Http\Controllers\PackageController;
 
 Route::post('/packages', [PackageController::class, 'store'])->name('packages.store');
+Route::get('/packages', [PackageController::class, 'index'])->name('packages.index');

@@ -1011,3 +1011,64 @@ document.addEventListener('click', function (e) {
         document.getElementById('selectedPackagePrice').textContent = packagePrice;
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("/packages")
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById("packages-container");
+
+            data.forEach(pkg => {
+                const savings = pkg.original_price - pkg.price;
+                const featuresHTML = pkg.features.map(feature =>
+                    `<li><span class="feature-icon">✓</span> ${feature.trim()}</li>`
+                ).join("");
+
+                const packageHTML = `
+                <div class="col-12 col-lg-4">
+                    <div class="package-card h-100" data-package="${pkg.slug}">
+                        <div class="package-header mb-3">
+                            <div class="package-title">${pkg.title}</div>
+                            <div class="d-flex flex-wrap mt-2">
+                                <span class="badge badge-flag">${pkg.flag}</span>
+                                <span class="badge badge-package">Package For ${pkg.country}</span>
+                            </div>
+                        </div>
+
+                        <div class="package-pricing mb-3">
+                            <div class="price-main">$${pkg.price} USD</div>
+                            <div class="d-flex align-items-center gap-2 mt-1">
+                                <span class="price-original">$${pkg.original_price} USD</span>
+                                <span class="price-savings">Save $${savings}</span>
+                            </div>
+                        </div>
+
+                        <ul class="package-features">
+                            ${featuresHTML}
+                        </ul>
+
+                        <div class="processing-time">
+                            <span>⏱</span>
+                            <span>${pkg.processing_time}</span>
+                        </div>
+
+                        <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal"
+                            data-bs-dismiss="modal" data-package-name="${pkg.title}"
+                            data-package-price="${pkg.price}">
+                            Get Started <span>→</span>
+                        </button>
+                    </div>
+                </div>
+                `;
+
+                // Insert before visa form if exists, else append
+                const visaFormComponent = container.querySelector('x-visa-form-component');
+                if (visaFormComponent) {
+                    visaFormComponent.insertAdjacentHTML('beforebegin', packageHTML);
+                } else {
+                    container.insertAdjacentHTML('beforeend', packageHTML);
+                }
+            });
+        })
+        .catch(err => console.error("Error fetching packages:", err));
+});

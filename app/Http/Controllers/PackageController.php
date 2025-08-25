@@ -7,6 +7,19 @@ use App\Models\Package;
 
 class PackageController extends Controller
 {
+    public function index()
+    {
+        $packages = Package::all();
+
+        // decode features JSON before sending back
+        $packages->transform(function ($pkg) {
+            $pkg->features = json_decode($pkg->features, true);
+            return $pkg;
+        });
+
+        return response()->json($packages);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
