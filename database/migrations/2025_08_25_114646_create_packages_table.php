@@ -15,10 +15,10 @@ return new class extends Migration {
             $table->string('title');
             $table->string('country');
             $table->decimal('price', 10, 2);
-            $table->decimal('original_price', 10, 2)->nullable();
-            $table->string('flag')->nullable();
-            $table->text('features')->nullable();
-            $table->string('processing_time')->nullable();
+            $table->decimal('original_price', 10, 2);
+            $table->string('flag', 10);
+            $table->json('features');
+            $table->string('processing_time');
             $table->string('slug')->unique();
             $table->timestamps();
         });

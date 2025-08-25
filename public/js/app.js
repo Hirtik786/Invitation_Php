@@ -892,73 +892,112 @@ function addPackage() {
         return;
     }
 
-    // Calculate savings
-    const savings = originalPrice - price;
-
     // Create features array
     const featuresArray = features.split('\n').filter(f => f.trim());
 
-    // Generate features HTML
-    let featuresHTML = '';
-    featuresArray.forEach(feature => {
-        featuresHTML += `<li><span class="feature-icon">✓</span> ${feature.trim()}</li>`;
-    });
+    // 🚀 Send data to Laravel backend
+    fetch("/packages", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+        },
+        body: JSON.stringify({
+            title,
+            country,
+            price,
+            original_price: originalPrice,
+            flag,
+            features: featuresArray,
+            processing_time: processingTime,
+            slug
+        })
+    })
+        .then(async res => {
+            if (!res.ok) {
+                // Laravel validation error (422) or server error
+                let errorText = await res.text();
+                try {
+                    let errorJson = JSON.parse(errorText);
+                    if (errorJson.errors) {
+                        // show first error
+                        let firstError = Object.values(errorJson.errors)[0][0];
+                        throw new Error("Validation error: " + firstError);
+                    }
+                } catch {
+                    throw new Error("Server error: " + res.status + " " + res.statusText);
+                }
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert("✅ Package saved in database!");
 
-    // Create new package HTML
-    const packageHTML = `
-            <div class="col-12 col-lg-4">
-                <div class="package-card h-100" data-package="${slug}">
-                    <div class="package-header mb-3">
-                        <div class="package-title">${title}</div>
-                        <div class="d-flex flex-wrap mt-2">
-                            <span class="badge badge-flag">${flag}</span>
-                            <span class="badge badge-package">Package For ${country}</span>
+                const savings = originalPrice - price;
+                let featuresHTML = featuresArray.map(feature =>
+                    `<li><span class="feature-icon">✓</span> ${feature.trim()}</li>`
+                ).join("");
+
+                const packageHTML = `
+                <div class="col-12 col-lg-4">
+                    <div class="package-card h-100" data-package="${slug}">
+                        <div class="package-header mb-3">
+                            <div class="package-title">${title}</div>
+                            <div class="d-flex flex-wrap mt-2">
+                                <span class="badge badge-flag">${flag}</span>
+                                <span class="badge badge-package">Package For ${country}</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="package-pricing mb-3">
-                        <div class="price-main">$${price} USD</div>
-                        <div class="d-flex align-items-center gap-2 mt-1">
-                            <span class="price-original">$${originalPrice} USD</span>
-                            <span class="price-savings">Save $${savings}</span>
+                        <div class="package-pricing mb-3">
+                            <div class="price-main">$${price} USD</div>
+                            <div class="d-flex align-items-center gap-2 mt-1">
+                                <span class="price-original">$${originalPrice} USD</span>
+                                <span class="price-savings">Save $${savings}</span>
+                            </div>
                         </div>
+
+                        <ul class="package-features">
+                            ${featuresHTML}
+                        </ul>
+
+                        <div class="processing-time">
+                            <span>⏱</span>
+                            <span>${processingTime}</span>
+                        </div>
+
+                        <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal"
+                            data-bs-dismiss="modal" data-package-name="${title}"
+                            data-package-price="${price}">
+                            Get Started <span>→</span>
+                        </button>
                     </div>
-
-                    <ul class="package-features">
-                        ${featuresHTML}
-                    </ul>
-
-                    <div class="processing-time">
-                        <span>⏱</span>
-                        <span>${processingTime}</span>
-                    </div>
-
-                    <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal"
-                        data-bs-dismiss="modal" data-package-name="${title}"
-                        data-package-price="${price}">
-                        Get Started <span>→</span>
-                    </button>
                 </div>
-            </div>
-        `;
+            `;
 
-    // Add to packages container (before the x-visa-form-component)
-    const visaFormComponent = document.querySelector('x-visa-form-component');
-    if (visaFormComponent) {
-        visaFormComponent.insertAdjacentHTML('beforebegin', packageHTML);
-    } else {
-        document.getElementById('packages-container').insertAdjacentHTML('beforeend', packageHTML);
-    }
+                const visaFormComponent = document.querySelector('x-visa-form-component');
+                if (visaFormComponent) {
+                    visaFormComponent.insertAdjacentHTML('beforebegin', packageHTML);
+                } else {
+                    document.getElementById('packages-container').insertAdjacentHTML('beforeend', packageHTML);
+                }
 
-    // Reset form
-    document.getElementById('packageForm').reset();
+                // Reset form
+                document.getElementById('packageForm').reset();
 
-    // Close modal
-    const modal = bootstrap.Modal.getInstance(document.getElementById('addPackageModal'));
-    modal.hide();
-
-    // Show success message
-    alert('Package added successfully!');
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addPackageModal'));
+                modal.hide();
+            } else {
+                alert("❌ Failed to save package!");
+                console.log(data);
+            }
+        })
+        .catch(err => {
+            console.error("Error:", err);
+            alert("⚠️ " + err.message);
+        });
 }
 
 // Handle package selection for step1Modal
