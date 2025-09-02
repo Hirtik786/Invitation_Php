@@ -14,7 +14,7 @@ class Package extends Model
         'country',
         'price',
         'original_price',
-        'flag',
+        // 'flag',
         'features',
         'processing_time',
         'slug',

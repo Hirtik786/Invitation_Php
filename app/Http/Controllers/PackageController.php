@@ -27,7 +27,7 @@ class PackageController extends Controller
             'country' => 'required|string|max:255',
             'price' => 'required|numeric',
             'original_price' => 'required|numeric',
-            'flag' => 'required|string|max:10',
+            // 'flag' => 'required|string|max:10',
             'features' => 'required|array', // accept array from JS
             'processing_time' => 'required|string|max:255',
             'slug' => 'required|string|unique:packages,slug',
@@ -47,7 +47,7 @@ class PackageController extends Controller
             'country' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'original_price' => 'required|numeric|min:0',
-            'flag' => 'required|string|max:10',
+            // 'flag' => 'required|string|max:10',
             'features' => 'required|array',
             'processing_time' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:packages,slug,' . $id,

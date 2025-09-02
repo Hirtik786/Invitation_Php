@@ -40,17 +40,13 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="packagePrice" class="form-label">Price (USD)</label>
                             <input type="number" class="form-control" id="packagePrice" required>
                         </div>
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="originalPrice" class="form-label">Original Price (USD)</label>
                             <input type="number" class="form-control" id="originalPrice" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="countryFlag" class="form-label">Country Flag</label>
-                            <input type="text" class="form-control" id="countryFlag" placeholder="🇹🇷" required>
                         </div>
                     </div>
 

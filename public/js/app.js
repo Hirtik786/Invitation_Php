@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.badge-flag').forEach((flagBadge) => {
                 flagBadge.innerHTML = `<img src="${countryFlagImg}" alt="${countryName} Flag" style="width:30px;height:auto;">`;
             });
-            loadPackagesForCountry(countryName);
+            loadPackagesForCountry(countryName, countryFlagImg);
             switchStep('package');
         });
     });
@@ -930,12 +930,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const country = document.getElementById('packageCountry')?.value;
         const price = document.getElementById('packagePrice')?.value;
         const originalPrice = document.getElementById('originalPrice')?.value;
-        const flag = document.getElementById('countryFlag')?.value;
+        // const flag = document.getElementById('countryFlag')?.value;
         const features = document.getElementById('packageFeatures')?.value;
         const processingTime = document.getElementById('processingTime')?.value;
         const slug = document.getElementById('packageSlug')?.value;
 
-        if (!title || !country || !price || !originalPrice || !flag || !features || !processingTime || !slug) {
+        if (!title || !country || !price || !originalPrice || !features || !processingTime || !slug) {
             alert('Please fill all fields');
             return;
         }
@@ -947,7 +947,7 @@ document.addEventListener('DOMContentLoaded', () => {
             country,
             price,
             original_price: originalPrice,
-            flag,
+            // flag,
             features: featuresArray,
             processing_time: processingTime,
             slug,
@@ -1028,7 +1028,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const country = editBtn.getAttribute('data-package-country');
         const price = editBtn.getAttribute('data-package-price');
         const originalPrice = editBtn.getAttribute('data-package-original-price');
-        const flag = editBtn.getAttribute('data-package-flag');
+        // const flag = editBtn.getAttribute('data-package-flag');
         const features = JSON.parse(editBtn.getAttribute('data-package-features') || '[]');
         const processingTime = editBtn.getAttribute('data-package-processing-time');
         const slug = editBtn.getAttribute('data-package-slug');
@@ -1038,7 +1038,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('packageCountry').value = country;
         document.getElementById('packagePrice').value = price;
         document.getElementById('originalPrice').value = originalPrice;
-        document.getElementById('countryFlag').value = flag;
+        // document.getElementById('countryFlag').value = flag;
         document.getElementById('packageFeatures').value = features.join('\n');
         document.getElementById('processingTime').value = processingTime;
         document.getElementById('packageSlug').value = slug;
@@ -1081,7 +1081,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load packages
     // Update your package loading fetch section
-    function loadPackagesForCountry(countryName) {
+    function loadPackagesForCountry(countryName, countryFlagImg) {
         fetch('/packages')
             .then((res) => res.json())
             .then((data) => {
@@ -1096,14 +1096,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 filteredData.forEach((pkg) => {
                     const savings = pkg.original_price - pkg.price;
-                    const featuresHTML = pkg.features.map((feature) => `<li><span class="feature-icon">✓</span> ${feature.trim()}</li>`).join('');
+                    const featuresHTML = pkg.features
+                        .map((feature) => `<li><span class="feature-icon">✓</span> ${feature.trim()}</li>`)
+                        .join('');
+
                     const packageHTML = `
       <div class="col-12 col-lg-4">
         <div class="package-card h-100" data-package="${pkg.slug}">
           <div class="package-header mb-3">
             <div class="package-title">${pkg.title}</div>
             <div class="d-flex flex-wrap mt-2">
-              <span class="badge badge-flag">${pkg.flag}</span>
+              <span class="badge badge-flag">
+                <img src="${countryFlagImg}" alt="${pkg.country} Flag" style="width:30px;height:auto;">
+              </span>
               <span class="badge badge-package">Package For ${pkg.country}</span>
             </div>
           </div>
@@ -1124,7 +1129,6 @@ document.addEventListener('DOMContentLoaded', () => {
               data-package-country="${pkg.country}"
               data-package-price="${pkg.price}"
               data-package-original-price="${pkg.original_price}"
-              data-package-flag="${pkg.flag}"
               data-package-features='${JSON.stringify(pkg.features)}'
               data-package-processing-time="${pkg.processing_time}"
               data-package-slug="${pkg.slug}"
@@ -1139,7 +1143,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <i class="bi bi-trash"></i> Delete
             </button>
           </div>
-          <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal" data-bs-dismiss="modal" data-package-name="${pkg.title}" data-package-price="${pkg.price}">Get Started <span>→</span></button>
+          <button class="btn btn-custom open-modal" 
+                  data-bs-toggle="modal" 
+                  data-bs-target="#step1Modal" 
+                  data-bs-dismiss="modal" 
+                  data-package-name="${pkg.title}" 
+                  data-package-price="${pkg.price}">
+              Get Started <span>→</span>
+          </button>
         </div>
       </div>`;
 
@@ -1155,6 +1166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+
     document.addEventListener('click', function (e) {
         const editBtn = e.target.closest('.edit-package-btn');
         if (!editBtn) return;
@@ -1165,7 +1177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const country = editBtn.getAttribute('data-package-country');
         const price = editBtn.getAttribute('data-package-price');
         const originalPrice = editBtn.getAttribute('data-package-original-price');
-        const flag = editBtn.getAttribute('data-package-flag');
+        // const flag = editBtn.getAttribute('data-package-flag');
         const features = JSON.parse(editBtn.getAttribute('data-package-features') || '[]');
         const processingTime = editBtn.getAttribute('data-package-processing-time');
         const slug = editBtn.getAttribute('data-package-slug');
@@ -1175,7 +1187,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('packageCountry').value = country;
         document.getElementById('packagePrice').value = price;
         document.getElementById('originalPrice').value = originalPrice;
-        document.getElementById('countryFlag').value = flag;
+        // document.getElementById('countryFlag').value = flag;
         document.getElementById('packageFeatures').value = features.join('\n');
         document.getElementById('processingTime').value = processingTime;
         document.getElementById('packageSlug').value = slug;
