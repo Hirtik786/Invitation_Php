@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.badge-flag').forEach((flagBadge) => {
                 flagBadge.innerHTML = `<img src="${countryFlagImg}" alt="${countryName} Flag" style="width:30px;height:auto;">`;
             });
-
+            loadPackagesForCountry(countryName);
             switchStep('package');
         });
     });
@@ -1081,15 +1081,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load packages
     // Update your package loading fetch section
-    fetch('/packages')
-        .then((res) => res.json())
-        .then((data) => {
-            const container = document.getElementById('packages-container');
-            if (!container) return;
-            data.forEach((pkg) => {
-                const savings = pkg.original_price - pkg.price;
-                const featuresHTML = pkg.features.map((feature) => `<li><span class="feature-icon">✓</span> ${feature.trim()}</li>`).join('');
-                const packageHTML = `
+    function loadPackagesForCountry(countryName) {
+        fetch('/packages')
+            .then((res) => res.json())
+            .then((data) => {
+                const container = document.getElementById('packages-container');
+                if (!container) return;
+
+                // Clear existing packages
+                container.querySelectorAll('.col-12.col-lg-4').forEach(col => col.remove());
+
+                // Filter by selected country
+                const filteredData = data.filter(pkg => pkg.country === countryName);
+
+                filteredData.forEach((pkg) => {
+                    const savings = pkg.original_price - pkg.price;
+                    const featuresHTML = pkg.features.map((feature) => `<li><span class="feature-icon">✓</span> ${feature.trim()}</li>`).join('');
+                    const packageHTML = `
       <div class="col-12 col-lg-4">
         <div class="package-card h-100" data-package="${pkg.slug}">
           <div class="package-header mb-3">
@@ -1109,41 +1117,42 @@ document.addEventListener('DOMContentLoaded', () => {
           <ul class="package-features">${featuresHTML}</ul>
           <div class="processing-time"><span>⏱</span><span>${pkg.processing_time}</span></div>
           <div class="package-actions mb-3">
-        <button 
-          class="btn btn-sm btn-outline-primary me-2 edit-package-btn"
-          data-package-id="${pkg.id}"
-          data-package-title="${pkg.title}"
-          data-package-country="${pkg.country}"
-          data-package-price="${pkg.price}"
-          data-package-original-price="${pkg.original_price}"
-          data-package-flag="${pkg.flag}"
-          data-package-features='${JSON.stringify(pkg.features)}'
-          data-package-processing-time="${pkg.processing_time}"
-          data-package-slug="${pkg.slug}"
-          data-bs-toggle="modal"
-          data-bs-target="#addPackageModal"
-        >
-          <i class="bi bi-pencil"></i> Edit
-        </button>
-        <button class="btn btn-sm btn-outline-danger delete-package-btn" 
-                data-package-id="${pkg.id}" 
-                data-package-title="${pkg.title}">
-            <i class="bi bi-trash"></i> Delete
-        </button>
-    </div>
+            <button 
+              class="btn btn-sm btn-outline-primary me-2 edit-package-btn"
+              data-package-id="${pkg.id}"
+              data-package-title="${pkg.title}"
+              data-package-country="${pkg.country}"
+              data-package-price="${pkg.price}"
+              data-package-original-price="${pkg.original_price}"
+              data-package-flag="${pkg.flag}"
+              data-package-features='${JSON.stringify(pkg.features)}'
+              data-package-processing-time="${pkg.processing_time}"
+              data-package-slug="${pkg.slug}"
+              data-bs-toggle="modal"
+              data-bs-target="#addPackageModal"
+            >
+              <i class="bi bi-pencil"></i> Edit
+            </button>
+            <button class="btn btn-sm btn-outline-danger delete-package-btn" 
+                    data-package-id="${pkg.id}" 
+                    data-package-title="${pkg.title}">
+                <i class="bi bi-trash"></i> Delete
+            </button>
+          </div>
           <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal" data-bs-dismiss="modal" data-package-name="${pkg.title}" data-package-price="${pkg.price}">Get Started <span>→</span></button>
         </div>
       </div>`;
 
-                const visaFormComponent = container.querySelector('x-visa-form-component');
-                if (visaFormComponent) {
-                    visaFormComponent.insertAdjacentHTML('beforebegin', packageHTML);
-                } else {
-                    container.insertAdjacentHTML('beforeend', packageHTML);
-                }
-            });
-        })
-        .catch((err) => console.error('Error fetching packages:', err));
+                    const visaFormComponent = container.querySelector('x-visa-form-component');
+                    if (visaFormComponent) {
+                        visaFormComponent.insertAdjacentHTML('beforebegin', packageHTML);
+                    } else {
+                        container.insertAdjacentHTML('beforeend', packageHTML);
+                    }
+                });
+            })
+            .catch((err) => console.error('Error fetching packages:', err));
+    }
 
 
     document.addEventListener('click', function (e) {
