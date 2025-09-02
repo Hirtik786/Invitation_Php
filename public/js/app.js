@@ -918,7 +918,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
 
     // ===== Package add (admin) =====
-    function addPackage() {
+    // Add this to your existing JavaScript code - replace the existing addPackage function and related logic
+
+    // Global variable to track if we're editing
+    let isEditingPackage = false;
+    let editingPackageId = null;
+
+    // Updated addPackage function to handle both add and edit
+    function savePackage() {
         const title = document.getElementById('packageTitle')?.value;
         const country = document.getElementById('packageCountry')?.value;
         const price = document.getElementById('packagePrice')?.value;
@@ -935,22 +942,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const featuresArray = features.split('\n').filter((f) => f.trim());
 
-        fetch('/packages', {
-            method: 'POST',
+        const requestData = {
+            title,
+            country,
+            price,
+            original_price: originalPrice,
+            flag,
+            features: featuresArray,
+            processing_time: processingTime,
+            slug,
+        };
+
+        // Determine if we're editing or adding
+        const url = isEditingPackage ? `/packages/${editingPackageId}` : '/packages';
+        const method = isEditingPackage ? 'PUT' : 'POST';
+
+        fetch(url, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
             },
-            body: JSON.stringify({
-                title,
-                country,
-                price,
-                original_price: originalPrice,
-                flag,
-                features: featuresArray,
-                processing_time: processingTime,
-                slug,
-            }),
+            body: JSON.stringify(requestData),
         })
             .then(async (res) => {
                 if (!res.ok) {
@@ -969,45 +982,21 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then((data) => {
                 if (data.success) {
-                    alert('✅ Package saved in database!');
-                    const savings = originalPrice - price;
-                    let featuresHTML = featuresArray.map((feature) => `<li><span class="feature-icon">✓</span> ${feature.trim()}</li>`).join('');
+                    alert(isEditingPackage ? '✅ Package updated successfully!' : '✅ Package saved in database!');
 
-                    const packageHTML = `
-            <div class="col-12 col-lg-4">
-              <div class="package-card h-100" data-package="${slug}">
-                <div class="package-header mb-3">
-                  <div class="package-title">${title}</div>
-                  <div class="d-flex flex-wrap mt-2">
-                    <span class="badge badge-flag">${flag}</span>
-                    <span class="badge badge-package">Package For ${country}</span>
-                  </div>
-                </div>
-                <div class="package-pricing mb-3">
-                  <div class="price-main">$${price} USD</div>
-                  <div class="d-flex align-items-center gap-2 mt-1">
-                    <span class="price-original">$${originalPrice} USD</span>
-                    <span class="price-savings">Save $${savings}</span>
-                  </div>
-                </div>
-                <ul class="package-features">${featuresHTML}</ul>
-                <div class="processing-time"><span>⏱</span><span>${processingTime}</span></div>
-                <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal" data-bs-dismiss="modal" data-package-name="${title}" data-package-price="${price}">Get Started <span>→</span></button>
-              </div>
-            </div>`;
-
-                    const visaFormComponent = document.querySelector('x-visa-form-component');
-                    if (visaFormComponent) {
-                        visaFormComponent.insertAdjacentHTML('beforebegin', packageHTML);
-                    } else {
-                        document.getElementById('packages-container')?.insertAdjacentHTML('beforeend', packageHTML);
-                    }
-
+                    // Reset form and modal state
                     document.getElementById('packageForm')?.reset();
+                    resetModalState();
+
+                    // Close modal
                     const modal = bootstrap.Modal.getInstance(document.getElementById('addPackageModal'));
                     modal?.hide();
+
+                    // Reload packages to reflect changes
+                    location.reload(); // Simple approach, or you can update the specific package card
+
                 } else {
-                    alert('❌ Failed to save package!');
+                    alert(isEditingPackage ? '❌ Failed to update package!' : '❌ Failed to save package!');
                     console.log(data);
                 }
             })
@@ -1016,6 +1005,58 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('⚠️ ' + err.message);
             });
     }
+
+    // Function to reset modal state
+    function resetModalState() {
+        isEditingPackage = false;
+        editingPackageId = null;
+        document.querySelector('#addPackageModalLabel').textContent = "Add New Package";
+        document.querySelector('#savePackageBtn').textContent = "Add Package";
+    }
+
+    // Handle edit button clicks
+    document.addEventListener('click', function (e) {
+        const editBtn = e.target.closest('.edit-package-btn');
+        if (!editBtn) return;
+
+        // Set editing mode
+        isEditingPackage = true;
+        editingPackageId = editBtn.getAttribute('data-package-id');
+
+        // Get package details
+        const title = editBtn.getAttribute('data-package-title');
+        const country = editBtn.getAttribute('data-package-country');
+        const price = editBtn.getAttribute('data-package-price');
+        const originalPrice = editBtn.getAttribute('data-package-original-price');
+        const flag = editBtn.getAttribute('data-package-flag');
+        const features = JSON.parse(editBtn.getAttribute('data-package-features') || '[]');
+        const processingTime = editBtn.getAttribute('data-package-processing-time');
+        const slug = editBtn.getAttribute('data-package-slug');
+
+        // Prefill form
+        document.getElementById('packageTitle').value = title;
+        document.getElementById('packageCountry').value = country;
+        document.getElementById('packagePrice').value = price;
+        document.getElementById('originalPrice').value = originalPrice;
+        document.getElementById('countryFlag').value = flag;
+        document.getElementById('packageFeatures').value = features.join('\n');
+        document.getElementById('processingTime').value = processingTime;
+        document.getElementById('packageSlug').value = slug;
+
+        // Update modal text
+        document.querySelector('#addPackageModalLabel').textContent = "Edit Package";
+        document.querySelector('#savePackageBtn').textContent = "Update Package";
+    });
+
+    // Handle modal close - reset state
+    document.getElementById('addPackageModal')?.addEventListener('hidden.bs.modal', function () {
+        resetModalState();
+        document.getElementById('packageForm')?.reset();
+    });
+
+    // Expose the function globally
+    window.savePackage = savePackage;
+    window.addPackage = savePackage; // For backward compatibility
     // Attach globally if needed elsewhere
     window.addPackage = addPackage;
 
@@ -1039,6 +1080,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Load packages
+    // Update your package loading fetch section
     fetch('/packages')
         .then((res) => res.json())
         .then((data) => {
@@ -1048,28 +1090,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 const savings = pkg.original_price - pkg.price;
                 const featuresHTML = pkg.features.map((feature) => `<li><span class="feature-icon">✓</span> ${feature.trim()}</li>`).join('');
                 const packageHTML = `
-          <div class="col-12 col-lg-4">
-            <div class="package-card h-100" data-package="${pkg.slug}">
-              <div class="package-header mb-3">
-                <div class="package-title">${pkg.title}</div>
-                <div class="d-flex flex-wrap mt-2">
-                  <span class="badge badge-flag">${pkg.flag}</span>
-                  <span class="badge badge-package">Package For ${pkg.country}</span>
-                </div>
-              </div>
-              <div class="package-pricing mb-3">
-                <div class="price-main">$${pkg.price} USD</div>
-                <div class="d-flex align-items-center gap-2 mt-1">
-                  <span class="price-original">$${pkg.original_price} USD</span>
-                  <span class="price-savings">Save $${savings}</span>
-                </div>
-              </div>
-              <ul class="package-features">${featuresHTML}</ul>
-              <div class="processing-time"><span>⏱</span><span>${pkg.processing_time}</span></div>
-              <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal" data-bs-dismiss="modal" data-package-name="${pkg.title}" data-package-price="${pkg.price}">Get Started <span>→</span></button>
-            
-              </div>
-          </div>`;
+      <div class="col-12 col-lg-4">
+        <div class="package-card h-100" data-package="${pkg.slug}">
+          <div class="package-header mb-3">
+            <div class="package-title">${pkg.title}</div>
+            <div class="d-flex flex-wrap mt-2">
+              <span class="badge badge-flag">${pkg.flag}</span>
+              <span class="badge badge-package">Package For ${pkg.country}</span>
+            </div>
+          </div>
+          <div class="package-pricing mb-3">
+            <div class="price-main">$${pkg.price} USD</div>
+            <div class="d-flex align-items-center gap-2 mt-1">
+              <span class="price-original">$${pkg.original_price} USD</span>
+              <span class="price-savings">Save $${savings}</span>
+            </div>
+          </div>
+          <ul class="package-features">${featuresHTML}</ul>
+          <div class="processing-time"><span>⏱</span><span>${pkg.processing_time}</span></div>
+          <div class="package-actions mb-3">
+        <button 
+          class="btn btn-sm btn-outline-primary me-2 edit-package-btn"
+          data-package-id="${pkg.id}"
+          data-package-title="${pkg.title}"
+          data-package-country="${pkg.country}"
+          data-package-price="${pkg.price}"
+          data-package-original-price="${pkg.original_price}"
+          data-package-flag="${pkg.flag}"
+          data-package-features='${JSON.stringify(pkg.features)}'
+          data-package-processing-time="${pkg.processing_time}"
+          data-package-slug="${pkg.slug}"
+          data-bs-toggle="modal"
+          data-bs-target="#addPackageModal"
+        >
+          <i class="bi bi-pencil"></i> Edit
+        </button>
+        <button class="btn btn-sm btn-outline-danger delete-package-btn" 
+                data-package-id="${pkg.id}" 
+                data-package-title="${pkg.title}">
+            <i class="bi bi-trash"></i> Delete
+        </button>
+    </div>
+          <button class="btn btn-custom open-modal" data-bs-toggle="modal" data-bs-target="#step1Modal" data-bs-dismiss="modal" data-package-name="${pkg.title}" data-package-price="${pkg.price}">Get Started <span>→</span></button>
+        </div>
+      </div>`;
 
                 const visaFormComponent = container.querySelector('x-visa-form-component');
                 if (visaFormComponent) {
@@ -1080,4 +1144,120 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         })
         .catch((err) => console.error('Error fetching packages:', err));
+
+
+    document.addEventListener('click', function (e) {
+        const editBtn = e.target.closest('.edit-package-btn');
+        if (!editBtn) return;
+
+        // Get package details
+        const id = editBtn.getAttribute('data-package-id');
+        const title = editBtn.getAttribute('data-package-title');
+        const country = editBtn.getAttribute('data-package-country');
+        const price = editBtn.getAttribute('data-package-price');
+        const originalPrice = editBtn.getAttribute('data-package-original-price');
+        const flag = editBtn.getAttribute('data-package-flag');
+        const features = JSON.parse(editBtn.getAttribute('data-package-features') || '[]');
+        const processingTime = editBtn.getAttribute('data-package-processing-time');
+        const slug = editBtn.getAttribute('data-package-slug');
+
+        // Prefill form
+        document.getElementById('packageTitle').value = title;
+        document.getElementById('packageCountry').value = country;
+        document.getElementById('packagePrice').value = price;
+        document.getElementById('originalPrice').value = originalPrice;
+        document.getElementById('countryFlag').value = flag;
+        document.getElementById('packageFeatures').value = features.join('\n');
+        document.getElementById('processingTime').value = processingTime;
+        document.getElementById('packageSlug').value = slug;
+
+        // Store editing state
+        window.editingPackageId = id;
+
+        // Switch modal text
+        document.querySelector('#addPackageModalLabel').textContent = "Edit Package";
+        document.querySelector('#savePackageBtn').textContent = "Update Package";
+    });
+    // Delete package function
+    function deletePackage(packageId, packageTitle) {
+        // Confirm deletion
+        const confirmMessage = `Are you sure you want to delete "${packageTitle}"?\n\nThis action cannot be undone.`;
+
+        if (!confirm(confirmMessage)) {
+            return;
+        }
+
+        // Show loading state (optional - you can add a loading indicator)
+        const deleteBtn = document.querySelector(`[onclick="deletePackage('${packageId}', '${packageTitle}')"]`);
+        if (deleteBtn) {
+            deleteBtn.disabled = true;
+            deleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span><i class="bi bi-trash"></i> Deleting...';
+        }
+
+        // Send delete request
+        fetch(`/packages/${packageId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+            }
+        })
+            .then(async (res) => {
+                if (!res.ok) {
+                    let errorText = await res.text();
+                    try {
+                        let errorJson = JSON.parse(errorText);
+                        throw new Error(errorJson.message || 'Failed to delete package');
+                    } catch {
+                        throw new Error('Server error: ' + res.status + ' ' + res.statusText);
+                    }
+                }
+                return res.json();
+            })
+            .then((data) => {
+                if (data.success) {
+                    // Show success message
+                    alert('✅ Package deleted successfully!');
+
+                    // Remove the package card from DOM
+                    const packageCard = document.querySelector(`[data-package-id="${packageId}"]`)?.closest('.col-12, .col-lg-4');
+                    if (packageCard) {
+                        packageCard.remove();
+                    } else {
+                        // Fallback: reload the page if we can't find the specific card
+                        location.reload();
+                    }
+                } else {
+                    throw new Error(data.message || 'Failed to delete package');
+                }
+            })
+            .catch((err) => {
+                console.error('Delete error:', err);
+                alert('❌ Error deleting package: ' + err.message);
+
+                // Reset button state on error
+                if (deleteBtn) {
+                    deleteBtn.disabled = false;
+                    deleteBtn.innerHTML = '<i class="bi bi-trash"></i> Delete';
+                }
+            });
+    }
+
+    // Alternative: Handle delete button clicks with event delegation (more flexible)
+    document.addEventListener('click', function (e) {
+        const deleteBtn = e.target.closest('.delete-package-btn');
+        if (!deleteBtn) return;
+
+        e.preventDefault();
+
+        const packageId = deleteBtn.getAttribute('data-package-id');
+        const packageTitle = deleteBtn.getAttribute('data-package-title') || 'this package';
+
+        if (packageId) {
+            deletePackage(packageId, packageTitle);
+        }
+    });
+
+    // Expose globally
+    window.deletePackage = deletePackage;
 });

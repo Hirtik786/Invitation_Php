@@ -25,4 +25,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/visa-applications', [VisaApplicationController::class, 'adminIndex'])->name('admin.visa.index');
     Route::get('/visa-applications/{visaApplication}', [VisaApplicationController::class, 'show'])->name('admin.visa.show');
     Route::patch('/visa-applications/{visaApplication}/status', [VisaApplicationController::class, 'updateStatus'])->name('admin.visa.update-status');
-});
+});// routes/web.php or routes/api.php
+Route::post('/packages', [PackageController::class, 'store']);
+Route::put('/packages/{id}', [PackageController::class, 'update']);
+// routes/web.php
+Route::delete('/packages/{id}', [PackageController::class, 'destroy']);
