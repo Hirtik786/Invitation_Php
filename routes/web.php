@@ -1,32 +1,25 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VisaApplicationController;
+use App\Http\Controllers\PackageController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-// routes/web.php
-use App\Http\Controllers\VisaApplicationController;
 
-
-// Route::post('/visa/store', [VisaApplicationController::class, 'store'])->name('visa.store');
-use App\Http\Controllers\PackageController;
-
-Route::post('/packages', [PackageController::class, 'store'])->name('packages.store');
+// Package routes
 Route::get('/packages', [PackageController::class, 'index'])->name('packages.index');
-// Add these routes to your routes/web.php file
+Route::post('/packages', [PackageController::class, 'store'])->name('packages.store');
+Route::put('/packages/{id}', [PackageController::class, 'update'])->name('packages.update');
+Route::delete('/packages/{id}', [PackageController::class, 'destroy'])->name('packages.destroy');
 
-// Public routes for visa application
+// Visa application routes
 Route::get('/visa/application', [VisaApplicationController::class, 'index'])->name('visa.application');
 Route::post('/visa/submit', [VisaApplicationController::class, 'submit'])->name('visa.submit');
 
-// Admin routes (you may want to add middleware for authentication)
+// Admin routes
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/visa-applications', [VisaApplicationController::class, 'adminIndex'])->name('admin.visa.index');
     Route::get('/visa-applications/{visaApplication}', [VisaApplicationController::class, 'show'])->name('admin.visa.show');
     Route::patch('/visa-applications/{visaApplication}/status', [VisaApplicationController::class, 'updateStatus'])->name('admin.visa.update-status');
-});// routes/web.php or routes/api.php
-Route::post('/packages', [PackageController::class, 'store']);
-Route::put('/packages/{id}', [PackageController::class, 'update']);
-// routes/web.php
-Route::delete('/packages/{id}', [PackageController::class, 'destroy']);
+});

@@ -457,7 +457,8 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="firstName" name="first_name" placeholder="First Name">
+                        <input type="text" class="form-control" id="firstName" name="first_name"
+                            placeholder="First Name">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">
@@ -467,12 +468,14 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Phone Number</label>
-                        <input type="text" class="form-control" id="phoneNumber" name="phone_number" placeholder="Phone Number">
+                        <input type="text" class="form-control" id="phoneNumber" name="phone_number"
+                            placeholder="Phone Number">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="emailAddress" name="email" placeholder="Email Address">
+                        <input type="email" class="form-control" id="emailAddress" name="email"
+                            placeholder="Email Address">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">
@@ -485,7 +488,8 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Passport Number</label>
-                        <input type="text" class="form-control" id="passportNumber" name="passport_number" placeholder="Passport Number">
+                        <input type="text" class="form-control" id="passportNumber" name="passport_number"
+                            placeholder="Passport Number">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">
@@ -495,7 +499,8 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Profession</label>
-                        <input type="text" class="form-control" id="profession" name="profession" placeholder="Profession">
+                        <input type="text" class="form-control" id="profession" name="profession"
+                            placeholder="Profession">
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
                     <div class="col-md-6">
@@ -510,9 +515,21 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Travel Purpose</label>
-                        <input type="text" class="form-control" id="travelPurpose" name="travel_purpose" placeholder="Travel Purpose">
+                        <select class="form-select" id="travelPurpose" name="travel_purpose" required>
+                            <option value="" selected disabled>Select travel purpose</option>
+                            <option value="Business">Business</option>
+                            <option value="Tourism">Tourism</option>
+                            <option value="Work">Work</option>
+                            <option value="Education">Education</option>
+                            <option value="Medical Treatment">Medical Treatment</option>
+                            <option value="Family Visit">Family Visit</option>
+                            <option value="Conference">Conference</option>
+                            <option value="Transit">Transit</option>
+                            <option value="Other">Other</option>
+                        </select>
                         <div class="step4-error text-danger small mt-1" style="display: none;"></div>
                     </div>
+
                     <div class="col-md-6">
                         <label class="form-label">Number of Travellers</label>
                         <input type="number" class="form-control" value="1" id="numTravellers" name="num_travellers"

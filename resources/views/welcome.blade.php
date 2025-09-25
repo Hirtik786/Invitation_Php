@@ -33,11 +33,11 @@
                         {{-- Country Component --}}
                         <x-country-form-component />
 
+                        {{-- Traveler Component --}}
+                        <x-traveler-form-component />
                         {{-- Package Component --}}
                         <x-package-form-component />
 
-                        {{-- Traveler Component --}}
-                        <x-traveler-form-component />
                     </form>
                 </div>
             </div>
