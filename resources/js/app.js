@@ -1,3 +1,6 @@
+import '../css/app.css';   // Laravel’s default
+import '../css/index.css'; // your custom stylesheet
+
 document.addEventListener('DOMContentLoaded', () => {
     // ===== GLOBAL STATE =====
     const appState = {
